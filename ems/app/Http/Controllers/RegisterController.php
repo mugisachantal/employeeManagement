@@ -57,11 +57,77 @@ class RegisterController extends Controller
         
     }
 
-    public function showEmployeeList()
+    public function showEmployeeList($T)
     {
         $employeesByDepartment = Employee::all()
             ->groupBy('department_name');
 
-        return view('employeelist', compact('employeesByDepartment'));
+        return view('employeelist', compact('employeesByDepartment',"T"));
+    }
+
+    public function edit($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return view('employee', compact('employee'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $employee = Employee::findOrFail($id);
+
+        $rules = [
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
+            'date_of_birth' => 'nullable|date',
+            'sex' => 'nullable|string|in:m,M,f,F,o,O', // Assuming 'm' for male, 'f' for female, 'o' for other
+            'profile_picture' => 'nullable|string|max:255', // You might want to handle file uploads differently
+            'password' => 'nullable|string|min:8|confirmed', // 'confirmed' requires a 'password_confirmation' field
+            'salary' => 'nullable|numeric|min:0',
+            'department_name' => 'nullable|string|max:255',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Update the employee attributes if the corresponding key is present in the request
+        if ($request->filled('name')) {
+            $employee->name = $request->input('name');
+        }
+
+        if ($request->filled('email')) {
+            $employee->email = $request->input('email');
+        }
+
+        if ($request->filled('date_of_birth')) {
+            $employee->date_of_birth = $request->input('date_of_birth');
+        }
+
+        if ($request->filled('sex')) {
+            $employee->sex = $request->input('sex');
+        }
+
+        if ($request->filled('profile_picture')) {
+            $employee->profile_picture = $request->input('profile_picture');
+        }
+
+        if ($request->filled('password')) {
+            $employee->password = Hash::make($request->input('password'));
+        }
+
+        if ($request->filled('salary')) {
+            $employee->salary = $request->input('salary');
+        }
+
+        if ($request->filled('department_name')) {
+            $employee->department_name = $request->input('department_name');
+        }
+
+        $employee->save();
+        return redirect()->route('hrdashboard')->with('success',$employee->name.' details updtaed successfully');
+
+        //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
     }
 }

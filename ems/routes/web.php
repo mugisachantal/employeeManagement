@@ -26,4 +26,6 @@ Route::post('/register', [RegisterController::class, 'register']);
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->name('dashboard')->middleware('auth'); // Example: Requires authentication
-Route::get('/employeelist', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
+Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
+Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
+Route::post('/employee/{id}', [RegisterController::class, 'update']);
