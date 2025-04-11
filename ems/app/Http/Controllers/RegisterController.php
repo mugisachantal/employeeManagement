@@ -20,39 +20,48 @@ class RegisterController extends Controller
         // 1. Validate the incoming request data
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:employees'],
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
             'date_of_birth' => ['required', 'date'], // Allows NULL and must be a valid date format
             'sex' => ['required', 'string', 'in:M,F,O'], // Allows NULL, must be a string, and one of 'M', 'F', or 'O' (adjust as needed)
-            'profile_picture' => ['required', 'string', 'max:255'], // Allows NULL, must be a string, max length 255 (adjust as needed)
-            'salary' => ['required', 'decimal', 'min:0','max:10'], // Must be present, numeric, and non-negative
+            'salary' => ['required', 'decimal:2', 'min:0', 'max:1000000000'],// Allow 2 decimal places, // Must be present, numeric, and non-negative
             'department' => ['required', 'string', 'max:255'], // Must be present, a string, max length 255
         ]);
 
-        // If validation fails, redirect back to the form with errors
+       // If validation fails, redirect back to the form with errors
         // if ($validator->fails()) {
         //     return redirect()->route('register')
         //                      ->withErrors($validator)
         //                      ->withInput();
         // }
+        $plainTextPassword = $request->input('password');
 
-        // 2. Create a new user
+// Hashinhg the password using bcrypt (a strong hashing algorithm):
+        $hashedPassword = Hash::make($plainTextPassword);
+
+        // 2. Creating  a new employee record
         employee::create([
             'name' => $request->name,
             'email' => $request->email,
-            
             'date_of_birth' => $request->date_of_birth,
             'sex' => $request->sex,
-            'profile_picture' => $request->profile_picture,
-            'password' => $request->password, // Remember to hash this before saving!
+            'password' => $hashedPassword, 
             'salary' => $request->salary,
-             'department_id'=>1
+             'department_name'=>$request->department
         ]);
-
+        return redirect()->route('hrdashboard')->with('success', 'Employee registered successfully in the system');
         // 3. Optionally log the user in after registration
        // auth()->login(User::where('email', $request->email)->first());
 
         // 4. Redirect the user to a specific page (e.g., dashboard)
-        return redirect()->route('hrdashboard')->with('success', 'Registration successful!');
+        
+    }
+
+    public function showEmployeeList()
+    {
+        $employeesByDepartment = Employee::all()
+            ->groupBy('department_name');
+
+        return view('employeelist', compact('employeesByDepartment'));
     }
 }

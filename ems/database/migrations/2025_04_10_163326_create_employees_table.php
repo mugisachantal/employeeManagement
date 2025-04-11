@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // VARCHAR
-            $table->string('email')->unique(); // Unique VARCHAR
-            $table->date('date_of_birth')->nullable(); // Integer, can be NULL
-            $table->char('sex')->default(true); // BOOLEAN with a default value
-            $table->string('profile_picture'); 
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->date('date_of_birth'); 
+            $table->char('sex')->nullable(); 
+            $table->string('profile_picture')->nullable(); 
             $table->string('password');
-            $table->decimal('salary', 12, 0);
+            $table->decimal('salary', 10, 0);
             $table->string('department_name');
-            
             $table->timestamps();
         });
     }

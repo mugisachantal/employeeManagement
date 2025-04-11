@@ -23,6 +23,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 // Example route for the dashboard (you'll need to create this controller and view)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard')->middleware('auth'); // Example: Requires authentication
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard')->middleware('auth'); // Example: Requires authentication
+Route::get('/employeelist', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
