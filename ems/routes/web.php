@@ -3,16 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\JobController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
+// Home route for the HR Dashboard
 Route::get('/', function () {
     return view('hrdashboard');
 })->name('hrdashboard')->middleware('auth:admin');
 
-// Example routes for registration and login
+// Registration and employee management routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -20,6 +18,14 @@ Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])
 Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
 Route::post('/employee/{id}', [RegisterController::class, 'update']);
 
-// Login routes
+// Admin Login routes
 Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AdminLoginController::class, 'login']);
+Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
+
+//job
+// Show upload form
+Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form')->middleware('auth:admin');
+
+// Handle job post
+Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');

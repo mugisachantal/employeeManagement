@@ -106,7 +106,7 @@
 <body>
 
     <div class="login-wrapper">
-        <h2>Admin Login</h2>
+        <h2>HRLogin</h2>
 
         <!-- Error Alerts -->
         @if ($errors->any())
@@ -136,13 +136,9 @@
             <button type="submit" class="btn btn-primary w-100">Sign In</button>
         </form>
 
-        <div class="forgot-password">
-            <a href="#">Forgot Password?</a>
-        </div>
+        
 
-        <div class="divider mt-4"><span>OR</span></div>
-
-        <button class="btn btn-outline-primary w-100" type="button">Create New Account</button>
+        
     </div>
 
     <!-- Bootstrap JS -->
