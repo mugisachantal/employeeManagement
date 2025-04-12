@@ -1,114 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee List by Department</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
+        .department-card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+            overflow: hidden;
+            background-color: #fff;
+            border-top: 4px solid #0d6efd;
         }
         .department-header {
-            font-size: 1.2em;
-            font-weight: bold;
-            background-color: #e0f7fa;
-            margin-top: 2px;
-            margin-bottom: -2px;
-            padding: 10px;
-            
-            color: rgb(141, 138, 138)
+            background-color: #f7f9fc;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .employee-table {
-            margin-bottom: 2px;
+        .department-header h3 {
+            margin: 0;
+            font-weight: 600;
+            color: #0d6efd;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
         }
-
-        
-        tr:hover {
-            background-color: #e0f2f7; /* Slightly lighter blue on hover */
+        .department-header h3 i {
+            margin-right: 10px;
         }
-        .edit-button {
-            background-color: #000080; /* Dark blue button */
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            border-top: none;
+            text-transform: uppercase;
+            font-size: 0.825rem;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        .table td {
+            vertical-align: middle;
+            padding: 12px 16px;
+        }
+        .edit-btn {
+            border-radius: 6px;
+            padding: 6px 14px;
+            transition: all 0.2s;
+        }
+        .page-header {
+            background-color: #0d6efd;
             color: white;
-            border: none;
-            padding: 8px 12px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .edit-button:hover {
-            background-color: #4169e1; /* Royal blue on hover */
+        .page-header h1 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .employee-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            font-weight: normal;
         }
     </style>
 </head>
 <body>
-
-    <h1>LIST OF EMPLOYEES IN THE DIFFERENT DEPARTMENTS</h1>
-
-    @foreach ($employeesByDepartment as $departmentName => $employees)
-        <div class="employee-table">
-            <h2 class="department-header">{{ $departmentName }} Department</h2>
-            <table>
-                
-                    <tr>
-                        @foreach (array_keys($employees->first()->toArray()) as $attribute)
-                            @if ($attribute !== 'id'&& $attribute !== 'password')
-                                @if ($attribute !== 'created_at'&& $attribute !== 'updated_at')
-                                <th>{{ ucfirst(str_replace('_', ' ', $attribute)) }}</th>
-                                    
-                                @endif
-                                @if ( $attribute == 'created_at')
-                                <th>Registerd On</th>
-                                @endif
-                                @if ( $attribute == 'updated_at')
-                                    <th>Updated On</th>
-                                @endif
-                            @endif
-                            @if($attribute=='id')
-                            @if($T==1)
-                            <th>
-                                EDIT
-                            </th>
-                            @endif
-                            @endif
-                        @endforeach
-                    </tr>
-                
-
-                <tbody>
-                    @foreach ($employees as $employee)
-                        <tr>
-                            @foreach ($employee->toArray() as $key => $value)
-                                @if ($key !== 'id' && $key != 'password')
-                                    <td>{{ $value }}</td>
-                                @endif
-                                {{-- @if ($key == 'updated_at' || $key = 'created_at')           &&$key !== 'updated_at' && $key != 'created_at'
-                                <td>{{ \Carbon\Carbon::parse( $employee->created_at)->format('Y-m-d \a\t H:i:s') }}</td>
-                               @endif --}}
-                                
-                               @if($key=='id')
-                               @if($T==1)
-                               <td>
-                                   <a href="{{ route('editing', $value)}}" class="edit-button">Edit</a>
-                               </td>                       
-                               @endif
-                               @endif
-                            @endforeach
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1><i class="bi bi-people-fill me-2"></i> Employee Directory</h1>
+                <div>
+                    <button class="btn btn-light btn-sm"><i class="bi bi-filter me-1"></i> Filter</button>
+                    <button class="btn btn-light btn-sm ms-2"><i class="bi bi-download me-1"></i> Export</button>
+                </div>
+            </div>
         </div>
-    @endforeach
+    </div>
 
+    <div class="container mb-5">
+        @foreach ($employeesByDepartment as $departmentName => $employees)
+            <div class="department-card">
+                <div class="department-header">
+                    <h3>
+                        <i class="bi bi-building"></i>
+                        {{ $departmentName }} Department
+                        <span class="employee-count">{{ count($employees) }} employees</span>
+                    </h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                @foreach (array_keys($employees->first()->toArray()) as $attribute)
+                                    @if ($attribute !== 'id' && $attribute !== 'password')
+                                        @if ($attribute !== 'created_at' && $attribute !== 'updated_at')
+                                            <th>{{ ucfirst(str_replace('_', ' ', $attribute)) }}</th>
+                                        @endif
+                                        @if ($attribute == 'created_at')
+                                            <th><i class="bi bi-calendar-check me-1"></i> Registered On</th>
+                                        @endif
+                                        @if ($attribute == 'updated_at')
+                                            <th><i class="bi bi-clock-history me-1"></i> Updated On</th>
+                                        @endif
+                                    @endif
+                                    @if($attribute=='id')
+                                        @if($T==1)
+                                            <th class="text-center">Actions</th>
+                                        @endif
+                                    @endif
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($employees as $employee)
+                                <tr>
+                                    @foreach ($employee->toArray() as $key => $value)
+                                        @if ($key !== 'id' && $key != 'password')
+                                            @if ($key == 'email')
+                                                <td><a href="mailto:{{ $value }}" class="text-decoration-none">{{ $value }}</a></td>
+                                            @elseif ($key == 'name' || $key == 'first_name' || $key == 'last_name')
+                                                <td class="fw-semibold">{{ $value }}</td>
+                                            @else
+                                                <td>{{ $value }}</td>
+                                            @endif
+                                        @endif
+                                        @if($key=='id')
+                                            @if($T==1)
+                                                <td class="text-center">
+                                                    <a href="{{ route('editing', $value)}}" class="btn btn-primary btn-sm edit-btn">
+                                                        <i class="bi bi-pencil-square me-1"></i> Edit
+                                                    </a>
+                                                </td>                       
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
