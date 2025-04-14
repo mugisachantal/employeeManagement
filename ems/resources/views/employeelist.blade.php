@@ -85,6 +85,28 @@
     </style>
 </head>
 <body>
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <h1 class="m-0 fw-bold fs-3">MotorVitaGlobal</h1>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/"><i class="bi bi-house-fill me-1"></i> Home</a>
+                            </li>
+                            </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
     <div class="page-header">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -124,9 +146,10 @@
                                         @endif
                                     @endif
                                     @if($attribute=='id')
-                                        @if($T==1)
+                                        @if($T==1||$T==3)
                                             <th class="text-center">Actions</th>
                                         @endif
+                                      
                                     @endif
                                 @endforeach
                             </tr>
@@ -152,6 +175,13 @@
                                                     </a>
                                                 </td>                       
                                             @endif
+                                            @if($T==3)
+                                            <td class="text-center">
+                                                <a href="{{ route('delete', $value)}}" class="btn btn-danger btn-sm btn-delete">
+                                                    <i class="bi bi-trash me-1"></i> Delete
+                                                </a>
+                                            </td>                       
+                                        @endif
                                         @endif
                                     @endforeach
                                 </tr>

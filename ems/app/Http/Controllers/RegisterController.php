@@ -61,8 +61,17 @@ class RegisterController extends Controller
     {
         $employeesByDepartment = Employee::all()
             ->groupBy('department_name');
+           
 
         return view('employeelist', compact('employeesByDepartment',"T"));
+    }
+
+    public function test()
+    {
+        
+            $employees = Employee::all();
+
+        return view('hrdashboard', compact('employees'));
     }
 
     public function edit($id)
@@ -129,5 +138,13 @@ class RegisterController extends Controller
         return redirect()->route('hrdashboard')->with('success',$employee->name.' details updtaed successfully');
 
         //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
+    }
+    public function delete($id){
+        $employee =employee::findOrFail($id);
+        if($employee){
+            $employee->delete();
+            return redirect()->route('hrdashboard')->with('success',$employee->name.'\'s details deleted successfully');
+        }
+         return redirect()->route('hrdashboard')->with('success',$employee->name.'\'s  record were already not there in our record ');
     }
 }
