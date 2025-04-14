@@ -168,16 +168,16 @@
                                             @endif
                                         @endif
                                         @if($key=='id')
-                                            @if($T==3)
+                                            @if($T==1)
                                                 <td class="text-center">
                                                     <a href="{{ route('editing', $value)}}" class="btn btn-primary btn-sm edit-btn">
                                                         <i class="bi bi-pencil-square me-1"></i> Edit
                                                     </a>
                                                 </td>                       
                                             @endif
-                                            @if($T==1)
+                                            @if($T==3)
                                             <td class="text-center">
-                                                <a href="{{ route('edit', $value)}}" class="btn btn-danger btn-sm btn-delete">
+                                                <a href="{{ route('delete', $value)}}" class="btn btn-danger btn-sm btn-delete">
                                                     <i class="bi bi-trash me-1"></i> Delete
                                                 </a>
                                             </td>                       

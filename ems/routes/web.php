@@ -16,14 +16,14 @@ use App\Http\Controllers\AdminLoginController;
 // Route::get('/policy/update', [PolicyController::class, 'index'])->name('policy.update');
 // Route::get('/jobs/post', [JobController::class, 'create'])->name('jobs.post');
 
-Route::get('/', function () {
-    return view('hrdashboard');
-})->name('hrdashboard')->middleware('auth:admin');
+// Route::get('/', function () {
+//     return view('hrdashboard');
+// })
 
 // Example routes for registration and login
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
-Route::get('/', [RegisterController::class, 'test']);
+Route::get('/', [RegisterController::class, 'test'])->name('hrdashboard');;
 // Example route for the dashboard (you'll need to create this controller and view)
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -31,7 +31,7 @@ Route::get('/', [RegisterController::class, 'test']);
 Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
 Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
 Route::post('/employee/{id}', [RegisterController::class, 'update']);
-Route::get('/employee/{id}', [RegisterController::class, 'delete'])->name('editing');
+Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
 
 
 // Login routes
