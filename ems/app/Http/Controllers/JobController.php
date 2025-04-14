@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;
-use Illuminate\Support\Facades\Storage;//added
+use Illuminate\Support\Facades\Storage;
 
 class JobController extends Controller
 {   //added to last
