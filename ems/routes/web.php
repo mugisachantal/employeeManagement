@@ -4,11 +4,27 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\EmployeeController; 
+use App\Mail\CVUploaded; 
+use Illuminate\Support\Facades\Mail; 
 
 // Home route for the HR Dashboard
 Route::get('/', function () {
     return view('hrdashboard');
 })->name('hrdashboard')->middleware('auth:admin');
+
+// Employee Dashboard Route
+Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+
+// View Jobs Route(needed)
+Route::get('/employee/jobs', [EmployeeController::class, 'viewJobs'])->name('employee.jobs');
+
+// Upload CV Route
+Route::post('/employee/upload-cv', [EmployeeController::class, 'uploadCV'])->name('employee.upload.cv');
+
+// Job posting routes
+Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form')->middleware('auth:admin');
+Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
 
 // Registration and employee management routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -23,9 +39,9 @@ Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login
 Route::post('login', [AdminLoginController::class, 'login']);
 Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 
-//job
-// Show upload form
-Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form')->middleware('auth:admin');
-
-// Handle job post
-Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
+// Test email route
+Route::get('/test-email', function () {
+    $cvPath = 'path/to/your/test_cv.pdf'; // Replace with a valid path
+    Mail::to('recipient@example.com')->send(new CVUploaded($cvPath));
+    return 'Email sent!';
+});
