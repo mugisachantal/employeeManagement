@@ -122,7 +122,22 @@
         <!-- Login Form -->
         <form action="{{ route('login') }}" method="POST">
             @csrf
+            {{-- <table>
+                <tr><div class="mb-3">
+                    <td><label for="type" class="form-label">HR manager</label></td>
+                    <td> <input type="radio"  id="email" name="user" value="{{ old('HR') }}" required></td>
+                   
+                </div>
+                </tr>
 
+                <div class="mb-3">
+                    <td><label for="type" class="form-label">User</label></td>
+                    <td><input type="radio" id="email" name="user" value="{{ old('EM') }}" required></td>
+
+                </div>
+            </table> --}}
+
+           
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
@@ -135,11 +150,8 @@
 
             <button type="submit" class="btn btn-primary w-100">Sign In</button>
         </form>
+</div>
 
-        
-
-        
-    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

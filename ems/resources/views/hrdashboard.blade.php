@@ -147,7 +147,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link link-dark active" aria-current="page">
                         <i class="bi bi-graph-up me-2"></i>
-                        Dashboard
+                        Dashboard 
                     </a>
                 </li>
                 <li>
@@ -157,21 +157,23 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route("employeelist",1)}}" class="nav-link link-dark">
+                    <a href="{{route("employeelist",2)}}" class="nav-link link-dark">
                         <i class="bi bi-pencil-square me-2"></i>
-                        Update Employee Profile
+                        View List of Employees
+                        
                     </a>
                 </li>
                 <li>
                     <a href="{{route("employeelist",1)}}" class="nav-link link-dark">
                         <i class="bi bi-trash-fill me-2"></i>
-                        Delete Employee Record
+                        Update Employee Profile
+                       
                     </a>
                 </li>
                 <li>
-                    <a href="{{route("employeelist",2)}}" class="nav-link link-dark">
+                    <a href="{{route("employeelist",3)}}" class="nav-link link-dark">
                         <i class="bi bi-list-ul me-2"></i>
-                        View List of Employees
+                        Delete Employee Record
                     </a>
                 </li>
                 <li>
@@ -181,7 +183,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">
+                    <a href="{{route('job.form')}}" class="nav-link link-dark">
                         <i class="bi bi-briefcase-fill me-2"></i>
                         Post Jobs
                     </a>
@@ -208,7 +210,6 @@
                 </ul>
             </div>
         </div>
-           
         <div class="admin-content">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -302,72 +303,6 @@
                     toggle.classList.remove('show');
                 }
             });
-    @endif
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; height: 100vh; overflow-y: auto;">
-       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-5 fw-semibold">Admin Panel</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="#" class="nav-link link-dark" aria-current="page">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('register') }}" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-                Register Employee
-            </a>
-        </li>
-        <li>
-            <a href="{{route("employeelist",1)}}" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-                Edit Employee Profile
-            </a>
-        </li>
-        <li>
-            <a href="{{route("employeelist",2)}}" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-                View List of Employess
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-                Update Policy
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('job.form') }}" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-                Post Jobs
-            </a>
-        </li>
-        <li>  
-            <a href="#" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#bi-question-circle-fill"/></svg>
-                Help
-            </a>
-        </li>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>Admin</strong>
-        </a>
-        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
-    </div>
-</div> 
 
 
             dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';

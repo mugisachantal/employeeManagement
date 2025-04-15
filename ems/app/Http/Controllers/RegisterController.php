@@ -74,10 +74,10 @@ class RegisterController extends Controller
         return view('hrdashboard', compact('employees'));
     }
 
-    public function edit($id)
+    public function edit($id,$F)
     {
         $employee = Employee::findOrFail($id);
-        return view('employee', compact('employee'));
+        return view('employee', compact('employee',));
     }
 
     public function update(Request $request, $id)

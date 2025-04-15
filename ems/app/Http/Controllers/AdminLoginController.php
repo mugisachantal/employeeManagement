@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Administrator;
+use App\Models\Employee;
 
 class AdminLoginController extends Controller
 {
@@ -20,15 +21,29 @@ class AdminLoginController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            
         ]);
 
         if (Auth::guard('admin')->attempt($credentials)) {
             // Regenerate session to prevent session fixation
             $request->session()->regenerate();
+            $Hrdata= Administrator::where('email','==',$request->email);
 
             // Redirect to the admin dashboard after successful login
-            return redirect()->route('hrdashboard');
+            return redirect()->route('hrdashboard','Hrdata');
         }
+
+        if (Auth::guard('employee')->attempt($credentials)) {
+            // Regenerate session to prevent session fixation
+            $request->session()->regenerate();
+            $employee='joseph';
+
+            // Redirect to the admin dashboard after successful login
+            return redirect()->route('employeedashboard','employee');
+        }
+
+
+
 
         // If credentials do not match, return with error
         return back()->withErrors([
