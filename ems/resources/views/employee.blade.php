@@ -166,27 +166,6 @@
     </div>
     
 
-    <li>
-        <a href="{{route("employeelist",2)}}" class="nav-link link-dark">
-            <i class="bi bi-pencil-square me-2"></i>
-            View List of Employees
-            
-        </a>
-    </li>
-    <li>
-        <a href="{{route("employeelist",1)}}" class="nav-link link-dark">
-            <i class="bi bi-trash-fill me-2"></i>
-            Update Employee Profile
-           
-        </a>
-    </li>
-    <li>
-        <a href="{{route("employeelist",3)}}" class="nav-link link-dark">
-            <i class="bi bi-list-ul me-2"></i>
-            Delete Employee Record
-        </a>
-    </li>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

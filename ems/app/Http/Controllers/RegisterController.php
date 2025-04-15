@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Administrator;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Support\Facades\Route;
 
 class RegisterController extends Controller
 {
@@ -66,22 +69,27 @@ class RegisterController extends Controller
         return view('employeelist', compact('employeesByDepartment',"T"));
     }
 
-    public function test()
+    public function test(Administrator $Hr)
     {
-        
+
             $employees = Employee::all();
 
-        return view('hrdashboard', compact('employees'));
+        return view('hrdashboard', compact('employees','Hr'));
     }
 
-    public function edit($id,$F)
-    {
-        $employee = Employee::findOrFail($id);
-        return view('employee', compact('employee',));
+    public function edit($id,$flag)
+    {    if($flag==10){
+        $employee = Employee::findOrFail($id,);}
+        return view('employee', compact('employee',)); 
     }
 
     public function update(Request $request, $id)
     {
+        $routeName = Route::currentRouteName();
+        if($routeName=='adminprofileupdate'){
+            return view('register');
+        }
+        
         $employee = Employee::findOrFail($id);
 
         $rules = [

@@ -8,10 +8,38 @@ use App\Http\Controllers\EmployeeController;
 use App\Mail\CVUploaded; 
 use Illuminate\Support\Facades\Mail; 
 
-// Home route for the HR Dashboard
+
+// Admin protected routes
+Route::middleware(['auth:admin'])->group(function () {
+ 
+});
+
+// Employee protected routes
+Route::middleware(['auth:employee'])->group(function () {
+    Route::get('/employee/dashboard/{employee}', [EmployeeController::class, 'employeedashboard'])->name('employeedashboard');
+    // ... other employee protected routes
+});
+
+
 Route::get('/', function () {
-    return view('hrdashboard');
-})->name('hrdashboard')->middleware('auth:admin');
+    return view('index');
+})->name('index');
+
+  // Job posting routes
+  Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form') ->middleware('auth:admin');
+  Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
+  
+  // employee profile  management routes
+  Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ->middleware('auth:admin');;
+  Route::post('/register', [RegisterController::class, 'register']);
+  Route::get('/hrdashboard{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
+  Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
+  Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
+  Route::post('/employee/{id}', [RegisterController::class, 'update']);
+  Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
+  Route::get('/adminprofileupdate/{id}', [RegisterController::class, 'update'])->name('adminprofileupdate');
+
+
 
 // Employee Dashboard Route
 Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
@@ -22,20 +50,13 @@ Route::get('/employee/jobs', [EmployeeController::class, 'viewJobs'])->name('emp
 // Upload CV Route
 Route::post('/employee/upload-cv', [EmployeeController::class, 'uploadCV'])->name('employee.upload.cv');
 
-// Job posting routes
-Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form')->middleware('auth:admin');
-Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
-
-// Registration and employee management routes
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-Route::get('/{Hrdata}', [RegisterController::class, 'test'])->name('hrdashboard');
 
 
-Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
-Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
-Route::post('/employee/{id}', [RegisterController::class, 'update']);
-Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
+
+
+
+
+
 
 
 // Authentication routes
