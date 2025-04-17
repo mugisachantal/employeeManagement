@@ -101,6 +101,30 @@
                 margin-left: 0;
             }
         }
+
+        .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px auto;
+        }
+        
+        .profile-img-container img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .no-profile-placeholder {
+            background-color: #e9ecef;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -146,17 +170,29 @@
 
     <!-- Content -->
     <div class="content">
-        <h2>Welcome {{$employee->name}}</h2>
-        <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
-    </div>
-    @if (session('success'))
+        @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
-
+<h2>Welcome {{$employee->name }}</h2>
+<div class="text-center">
+    <div class="profile-img-container">
+        @if ($employee->profile_picture)
+            <img src="{{ asset('storage/' . $employee->profile_picture) }}" 
+                 alt="Profile Picture" 
+                 class="img-fluid rounded-circle border border-primary shadow">
+        @else
+            <div class="no-profile-placeholder rounded-circle border border-primary shadow">
+                No Profile Picture
+            </div>
+        @endif
+    </div>
+</div>
+        <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
+        
     <!-- Upload CV Modal -->
     <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -184,6 +220,30 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            const profilePictureWrapper = document.getElementById('profilePictureWrapper');
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const availableHeight = window.innerHeight - headerHeight - 40; // Adjust 40 for margins
+
+            // Calculate a relative size (e.g., 30% of available height, with a maximum)
+            let size = Math.min(availableHeight * 0.3, 200); // Adjust 0.3 and 200 as needed
+
+            profilePictureWrapper.style.width = size + 'px';
+            profilePictureWrapper.style.height = size + 'px';
+        });
+
+        window.addEventListener('resize', function() {
+            const profilePictureWrapper = document.getElementById('profilePictureWrapper');
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const availableHeight = window.innerHeight - headerHeight - 40;
+
+            let size = Math.min(availableHeight * 0.3, 200);
+
+            profilePictureWrapper.style.width = size + 'px';
+            profilePictureWrapper.style.height = size + 'px';
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>

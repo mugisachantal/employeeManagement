@@ -92,6 +92,12 @@ class RegisterController extends Controller
         return view('employee', compact('employee','flag')); 
     }
 
+    public function ppupdate($id,Request $request,$flag)
+    { 
+        $employee = Employee::findOrFail($id,);
+        return view('employee', compact('employee','flag')); 
+    }
+
     public function update(Request $request, $id,$flag)
     {    if($flag==1|| $flag==0){
         $employee = Auth::guard('employee')->user();
@@ -106,13 +112,14 @@ class RegisterController extends Controller
                     'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
                     'date_of_birth' => 'nullable|date',
                     'sex' => 'nullable|string|in:m,M,f,F,o,O',
-                    'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:49048',
+                    'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:49048',
                      'password' => 'nullable|string|min:3|confirmed', // 'confirmed' requires a 'password_confirmation' field
                     'salary' => 'nullable|numeric|min:0',
                     'department_name' => 'nullable|string|max:255',
         ];
 
         $validator = Validator::make($request->all(), $rules);
+       
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -135,16 +142,20 @@ class RegisterController extends Controller
             $employee->sex = $request->input('sex');
         }
 
-        if ($request->filled('profile_picture')) {
+        if ($request->hasFile('profile_picture')) {
           
             $image = $request->file('profile_picture');
             $filename = 'profile_' . time() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('profile_pictures', $filename, 'public'); // Store in storage/app/public/profile_pictures
            // Delete the old profile picture if it exists
             if ($employee->profile_picture && Storage::disk('public')->exists($employee->profile_picture)) {
-                Storage::disk('public')->delete($employee->profile_picture_path);
+                Storage::disk('public')->delete($employee->profile_picture);
             }
-            $employee->profile_picture = $path;
+            
+                $employee->profile_picture = $path;  
+            
+        }else{
+            return redirect()->route('employee.dashboard',['employee'=> $employee])->with('success',$employee->name.'failed to upload profile picture');
         }
 
         if ($request->filled('password')) {
@@ -165,7 +176,7 @@ class RegisterController extends Controller
         
         return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.' record updtaed successfully');
         }else{
-            return redirect()->route('employee.dashboard',['employee'=> $employee])->with('success',$employee->name.' record updtaed successfully');;
+            return redirect()->route('employee.dashboard',['employee'=> $employee])->with('success',$employee->name.' record updtaed successfully');
         }
         //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
     }

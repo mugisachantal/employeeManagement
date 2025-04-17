@@ -150,11 +150,48 @@
         h2{
             text-align: center
         }
+        .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px auto;
+        }
+        
+        .profile-img-container img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .no-profile-placeholder {
+            background-color: #e9ecef;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">@if($flag==0){{$employee->name}}'s @else Your @endif current Details</h2>
+          <!-- Profile Picture using Bootstrap classes -->
+          <div class="text-center">
+            <div class="profile-img-container">
+                @if ($employee->profile_picture)
+                    <img src="{{ asset('storage/' . $employee->profile_picture) }}" 
+                         alt="Profile Picture" 
+                         class="img-fluid rounded-circle border border-primary shadow">
+                @else
+                    <div class="no-profile-placeholder rounded-circle border border-primary shadow">
+                        No Profile Picture
+                    </div>
+                @endif
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -323,7 +360,7 @@
                                         <button type="button" class="btn btn-outline-primary">
                                             <i class="bi bi-upload me-2"></i>Choose File
                                         </button>
-                                        <input id="profile_picture" type="file" class="form-control" name="profile_picture" accept="image/*">
+                                        <input id="profile_picture"class="form-control"  type="file" name="profile_picture" accept="image/*">
                                     </div>
                                 </div>
                             </div>
