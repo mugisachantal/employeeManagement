@@ -106,8 +106,8 @@ class RegisterController extends Controller
                     'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
                     'date_of_birth' => 'nullable|date',
                     'sex' => 'nullable|string|in:m,M,f,F,o,O',
-                    'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                     'password' => 'nullable|string|min:8|confirmed', // 'confirmed' requires a 'password_confirmation' field
+                    'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:49048',
+                     'password' => 'nullable|string|min:3|confirmed', // 'confirmed' requires a 'password_confirmation' field
                     'salary' => 'nullable|numeric|min:0',
                     'department_name' => 'nullable|string|max:255',
         ];
@@ -165,7 +165,7 @@ class RegisterController extends Controller
         
         return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.' record updtaed successfully');
         }else{
-            return redirect()->route('employeedashboard');
+            return redirect()->route('employee.dashboard',['employee'=> $employee])->with('success',$employee->name.' record updtaed successfully');;
         }
         //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
     }

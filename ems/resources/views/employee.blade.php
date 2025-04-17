@@ -308,7 +308,7 @@
                 <div class="card">
                     <div class="card-header">{{ __('Register') }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('update',['id'=>$employee->id,'flag'=>1])}}" id="registerForm">
+                        <form method="POST" action="{{ route('update',['id'=>$employee->id,'flag'=>1])}}" id="registerForm" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-4">
                                 <label for="profile_picture" class="form-label fw-bold mb-3">Profile Picture</label>

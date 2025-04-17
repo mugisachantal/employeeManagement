@@ -149,6 +149,13 @@
         <h2>Welcome {{$employee->name}}</h2>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
     </div>
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 
     <!-- Upload CV Modal -->
     <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
