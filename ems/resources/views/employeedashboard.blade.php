@@ -109,6 +109,7 @@
     <div class="sidebar d-flex flex-column">
         <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
         <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
+        <a class="nav-link" href="{{route('update.profile',$employee->id)}}"><i class="fas fa-home me-2"></i>update profile</a>
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" data-bs-toggle="dropdown">
                 <i class="fas fa-briefcase me-2"></i>Jobs
@@ -145,7 +146,7 @@
 
     <!-- Content -->
     <div class="content">
-        <h2>Welcome to Your Dashboard</h2>
+        <h2>Welcome {{$employee->name}}</h2>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
     </div>
 

@@ -16,8 +16,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
 // Employee protected routes
 Route::middleware(['auth:employee'])->group(function () {
-    Route::get('/employee/dashboard/{employee}', [EmployeeController::class, 'employeedashboard'])->name('employeedashboard');
-    // ... other employee protected routes
+    // Employee Dashboard Route
+Route::get('/edashboard/{employee}', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
 });
 
 
@@ -32,17 +32,17 @@ Route::get('/', function () {
   // employee profile  management routes
   Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ->middleware('auth:admin');;
   Route::post('/register', [RegisterController::class, 'register']);
-  Route::get('/hrdashboard{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
+  Route::get('/hrdashboard/{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
   Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
   Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
-  Route::post('/employee/{id}', [RegisterController::class, 'update']);
+  Route::post('/employee/{id}/{flag}', [RegisterController::class, 'update'])->name('update');
   Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
   Route::get('/adminprofileupdate/{id}', [RegisterController::class, 'update'])->name('adminprofileupdate');
+  Route::get('/profileupdate/{id}', [RegisterController::class, 'profileRetrival'])->name('update.profile');
+  
 
 
 
-// Employee Dashboard Route
-Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
 
 // View Jobs Route(needed)
 Route::get('/employee/jobs', [EmployeeController::class, 'viewJobs'])->name('employee.jobs');

@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Route;
 
@@ -77,30 +79,37 @@ class RegisterController extends Controller
         return view('hrdashboard', compact('employees','Hr'));
     }
 
-    public function edit($id,$flag)
-    {    if($flag==10){
-        $employee = Employee::findOrFail($id,);}
-        return view('employee', compact('employee',)); 
+    public function edit($id)
+    {  $flag= 0;
+        $employee = Employee::findOrFail($id,);
+        return view('employee', compact('employee','flag')); 
     }
 
-    public function update(Request $request, $id)
-    {
-        $routeName = Route::currentRouteName();
-        if($routeName=='adminprofileupdate'){
-            return view('register');
-        }
-        
+
+    public function profileRetrival($id)
+    {   $flag= 1;
+        $employee = Employee::findOrFail($id,);
+        return view('employee', compact('employee','flag')); 
+    }
+
+    public function update(Request $request, $id,$flag)
+    {    if($flag==1|| $flag==0){
+        $employee = Auth::guard('employee')->user();
         $employee = Employee::findOrFail($id);
+    }else{
+        return redirect()->route('login')->with('errors','you not logged in ,please login to continue ');
+    }
+        
 
         $rules = [
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
-            'date_of_birth' => 'nullable|date',
-            'sex' => 'nullable|string|in:m,M,f,F,o,O', // Assuming 'm' for male, 'f' for female, 'o' for other
-            'profile_picture' => 'nullable|string|max:255', // You might want to handle file uploads differently
-            'password' => 'nullable|string|min:8|confirmed', // 'confirmed' requires a 'password_confirmation' field
-            'salary' => 'nullable|numeric|min:0',
-            'department_name' => 'nullable|string|max:255',
+                    'name' => 'nullable|string|max:255',
+                    'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
+                    'date_of_birth' => 'nullable|date',
+                    'sex' => 'nullable|string|in:m,M,f,F,o,O',
+                    'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                     'password' => 'nullable|string|min:8|confirmed', // 'confirmed' requires a 'password_confirmation' field
+                    'salary' => 'nullable|numeric|min:0',
+                    'department_name' => 'nullable|string|max:255',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -127,7 +136,15 @@ class RegisterController extends Controller
         }
 
         if ($request->filled('profile_picture')) {
-            $employee->profile_picture = $request->input('profile_picture');
+          
+            $image = $request->file('profile_picture');
+            $filename = 'profile_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('profile_pictures', $filename, 'public'); // Store in storage/app/public/profile_pictures
+           // Delete the old profile picture if it exists
+            if ($employee->profile_picture && Storage::disk('public')->exists($employee->profile_picture)) {
+                Storage::disk('public')->delete($employee->profile_picture_path);
+            }
+            $employee->profile_picture = $path;
         }
 
         if ($request->filled('password')) {
@@ -143,16 +160,22 @@ class RegisterController extends Controller
         }
 
         $employee->save();
-        return redirect()->route('hrdashboard')->with('success',$employee->name.' details updtaed successfully');
-
+        if($flag==0){
+        $Hr = Auth::guard('admin')->user();
+        
+        return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.' record updtaed successfully');
+        }else{
+            return redirect()->route('employeedashboard');
+        }
         //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
     }
     public function delete($id){
         $employee =employee::findOrFail($id);
+        $Hr = Auth::guard('admin')->user();
         if($employee){
             $employee->delete();
-            return redirect()->route('hrdashboard')->with('success',$employee->name.'\'s details deleted successfully');
+            return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.'\'s record deleted successfully');
         }
-         return redirect()->route('hrdashboard')->with('success',$employee->name.'\'s  record were already not there in our record ');
+         return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.'\'s  record were already not there in our record ');
     }
 }
