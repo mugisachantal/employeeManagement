@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,10 @@ Route::middleware(['auth:admin'])->group(function () {
  
 });
 
+
 // Employee protected routes
 Route::middleware(['auth:employee'])->group(function () {
-    Route::get('/employee/dashboard/{employee}', [EmployeeController::class, 'employeedashboard'])->name('employeedashboard');
+    Route::get('/employee/dashboard', [EmployeeController::class, 'employeedashboard'])->name('employeedashboard');
     // ... other employee protected routes
 });
 
@@ -42,7 +44,7 @@ Route::get('/', function () {
 
 
 // Employee Dashboard Route
-Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+//Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
 
 // View Jobs Route(needed)
 Route::get('/employee/jobs', [EmployeeController::class, 'viewJobs'])->name('employee.jobs');
@@ -70,3 +72,4 @@ Route::get('/test-email', function () {
     Mail::to('recipient@example.com')->send(new CVUploaded($cvPath));
     return 'Email sent!';
 });
+
