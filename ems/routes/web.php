@@ -37,7 +37,7 @@ Route::get('/', function () {
   Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
   Route::post('/employee/{id}/{flag}', [RegisterController::class, 'update'])->name('update');
   Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
-  Route::get('/adminprofileupdate/{id}', [RegisterController::class, 'update'])->name('adminprofileupdate');
+  Route::post('/adminprofileupdate', [RegisterController::class, 'adminUpdate'])->name('Admin.profile.update');
   Route::get('/profileupdate/{id}', [RegisterController::class, 'profileRetrival'])->name('update.profile');
   
 

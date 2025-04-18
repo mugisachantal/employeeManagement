@@ -81,23 +81,28 @@ class RegisterController extends Controller
 
     public function edit($id)
     {  $flag= 0;
-        $employee = Employee::findOrFail($id,);
-        return view('employee', compact('employee','flag')); 
+        if($id==-1){
+            $flag= 1;
+            $user = Auth::guard('admin')->user();
+        }else{
+        $user = Employee::findOrFail($id,);
+       }
+        return view('employee', compact('user','flag','id')); 
     }
 
 
     public function profileRetrival($id)
     {   $flag= 1;
-        $employee = Employee::findOrFail($id,);
+        $user = Employee::findOrFail($id,);
         return view('employee', compact('employee','flag')); 
     }
+    // public function adminProfileRetrival($aflag)
+    // {   $flag= 0;
+    //     $user = Auth::guard('admin')->user();
+    //     return view('employee', compact('employee','flag')); 
+    // }
 
-    public function ppupdate($id,Request $request,$flag)
-    { 
-        $employee = Employee::findOrFail($id,);
-        return view('employee', compact('employee','flag')); 
-    }
-
+   
     public function update(Request $request, $id,$flag)
     {    if($flag==1|| $flag==0){
         $employee = Auth::guard('employee')->user();
@@ -180,13 +185,97 @@ class RegisterController extends Controller
         }
         //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
     }
+
+    public function adminUpdate(Request $request)
+    {    
+        $administrator = Auth::guard('admin')->user();
+       if($administrator){
+        $rules = [
+                    'name' => 'nullable|string|max:255',
+                    'email' => 'nullable|string|email|max:255|unique:employees,email,',
+                    'date_of_birth' => 'nullable|date',
+                    'sex' => 'nullable|string|in:m,M,f,F,o,O',
+                    'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:49048',
+                     'password' => 'nullable|string|min:3|confirmed', // 'confirmed' requires a 'password_confirmation' field
+                    'salary' => 'nullable|numeric|min:0',
+                    'department_name' => 'nullable|string|max:255',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+       
+
+        if ($validator->fails()) {
+           // return response()->json(['errors' => $validator->errors()], 422);
+            return back()->withErrors([
+                'email' => $validator->errors(),
+            ]);
+        }
+
+        // Update the employee attributes if the corresponding key is present in the request
+        if ($request->filled('name')) {
+            $administrator->name = $request->input('name');
+        }
+
+        if ($request->filled('email')) {
+            $administrator->email = $request->input('email');
+        }
+
+        if ($request->filled('date_of_birth')) {
+            $administrator->date_of_birth = $request->input('date_of_birth');
+        }
+
+        if ($request->filled('sex')) {
+            $administrator->sex = $request->input('sex');
+        }
+
+        if ($request->hasFile('profile_picture')) {
+          
+            $image = $request->file('profile_picture');
+            $filename = 'profile_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('profile_pictures', $filename, 'public'); // Store in storage/app/public/profile_pictures
+           // Delete the old profile picture if it exists
+            if ( $administrator->profile_picture && Storage::disk('public')->exists($administrator->profile_picture)) {
+                Storage::disk('public')->delete($administrator->profile_picture);
+            }
+            
+            $administrator->profile_picture = $path;  
+            
+        }else{
+            return redirect()->route('hrdashboard',['employee'=> $administrator])->with('success',$administrator->name.'failed to upload profile picture');
+        }
+
+        if ($request->filled('password')) {
+            $administrator->password = Hash::make($request->input('password'));
+        }
+
+        if ($request->filled('salary')) {
+            $administrator->salary = $request->input('salary');
+        }
+
+        if ($request->filled('department_name')) {
+            $administrator->department_name = $request->input('department_name');
+        }
+
+        $administrator->save();
+       
+        $Hr = Auth::guard('admin')->user();
+        
+        return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success','Your record has been updated successfully');
+       
+        }else{
+            return redirect()->route('login')->with('errors','you not logged in ,please login to continue ');
+        }
+            //return response()->json(['message' => 'Employee updated successfully', 'employee' => $employee], 200);
+    }
+
     public function delete($id){
         $employee =employee::findOrFail($id);
-        $Hr = Auth::guard('admin')->user();
+        $Hr = Auth::guard('admin')->user(); // no much us just, satisfying the purpose that route hrdashboard  require parameter so as to pass to the function which then willmpass to the rh viwe
         if($employee){
             $employee->delete();
             return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.'\'s record deleted successfully');
-        }
+        }else{
          return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success',$employee->name.'\'s  record were already not there in our record ');
+        }
     }
 }

@@ -161,9 +161,9 @@
         <div class="admin-sidebar p-3 d-flex flex-column">
             <div class="sidebar-user-dropdown mb-3">
                 <div class="dropdown">
-                    WELCOME ADMIN 
-                    <a href="{{ route('adminprofileupdate',4)}}" class="d-flex align-items-center link-dark text-decoration-none " >
-                      <img src="https://github.com/mdo.png" alt="Admin Avatar" width="32" height="32" class="rounded-circle me-2">
+                    WELCOME ADMIN  
+                    <a href="{{ route('editing',-1)}}" class="d-flex align-items-center link-dark text-decoration-none " >
+                      <img src="{{ asset('storage/' . $Hr->profile_picture) }}" alt="HR profile picture" width="50" height="50" class="rounded-circle me-1">
                         <strong> {{$Hr->name}}</strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
