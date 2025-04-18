@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 Route::middleware(['auth:admin'])->group(function () {
  
 });
+
 
 // Employee protected routes
 Route::middleware(['auth:employee'])->group(function () {
@@ -70,3 +72,4 @@ Route::get('/test-email', function () {
     Mail::to('recipient@example.com')->send(new CVUploaded($cvPath));
     return 'Email sent!';
 });
+
