@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\EmployeeController; 
@@ -23,10 +24,11 @@ Route::get('/edashboard/{employee}', [EmployeeController::class, 'dashboard'])->
 });
 
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
-
+// Route::get('/', function () {
+//     return view('index');
+// })->name('index');
+//salary tracking route and 
+  Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
   // Job posting routes
   Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form') ->middleware('auth:admin');
   Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
@@ -42,6 +44,7 @@ Route::get('/', function () {
   Route::post('/adminprofileupdate', [RegisterController::class, 'adminUpdate'])->name('Admin.profile.update');
   Route::get('/profileupdate/{id}', [RegisterController::class, 'profileRetrival'])->name('update.profile');
   
+
 
 
 

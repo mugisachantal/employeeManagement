@@ -43,6 +43,7 @@
             padding: 20px;
             margin-bottom: 20px;
             border-left: 5px solid; /* Theme accent */
+            height: 100%;
         }
         .dashboard-card h5 {
             font-weight: bold;
@@ -65,6 +66,11 @@
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 0.25rem;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        /* Make salary dropdown menu wider */
+        .salary-dropdown-menu {
+            width: 500px !important;
+            max-width: 100vw;
         }
         .dropdown-item {
             display: block;
@@ -115,6 +121,10 @@
         .sidebar-user-dropdown {
             padding: 15px;
             border-bottom: 1px solid #dee2e6;
+        }
+        /* Fix for salary card */
+        .salary-card {
+            height: 100%;
         }
     </style>
 </head>
@@ -267,14 +277,44 @@
                         <h5><i class="bi bi-currency-dollar me-2"></i> Pending Salary</h5>
                         <div class="dropdown-container">
                             <div class="card-dropdown-toggle" onclick="toggleDropdown(this)">
-                                View Pending <span class="badge bg-warning text-dark rounded-pill ms-2">{{ count($employees ?? []) }}</span>
+                                View Pending <span class="badge bg-warning text-dark rounded-pill ms-2">{{ count($UnPaidEmployees ?? []) }}</span>
                             </div>
-                            <ul class="dropdown-menu" data-parent=".dashboard-card">
-                                @forelse ($employees as $employee)
-                                    <li><a class="dropdown-item" href="#">{{ $employee->name }}</a></li>
-                                @empty
-                                    <li><span class="dropdown-item">No pending salaries</span></li>
-                                @endforelse
+                            <ul class="dropdown-menu salary-dropdown-menu" data-parent=".dashboard-card">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped mb-0">
+                                        <thead class="bg-warning text-dark">
+                                            <tr>
+                                                <th>Employee Name</th>
+                                                <th>Salary Amount</th>
+                                                <th class="text-center">Payment Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @forelse ($UnPaidEmployees as $employee)
+                                            <tr id="employee-row-{{ $employee->id }}">
+                                                <td>{{ $employee->name }}</td>
+                                                <td>${{ number_format($employee->salary, 2) }}</td>
+                                                <td class="text-center">
+                                                    <form action="{{ route('register') }}" method="POST" class="salary-form">
+                                                        @csrf
+                                                        <input type="hidden" name="employee_id" value="{{ $employee->id }}">
+                                                        <div class="form-check d-flex justify-content-center">
+                                                            <input type="checkbox" class="form-check-input salary-checkbox" 
+                                                                id="checkbox-{{ $employee->id }}" 
+                                                                data-employee-id="{{ $employee->id }}"
+                                                                name="submit_on_check">
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3" class="text-center py-3 text-muted">No pending salaries</td>
+                                            </tr>
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
                             </ul>
                         </div>
                     </div>
@@ -309,22 +349,20 @@
             const allDropdowns = document.querySelectorAll('.dropdown-menu');
             const allToggles = document.querySelectorAll('.card-dropdown-toggle');
 
+            // Close all other dropdowns first
             allDropdowns.forEach(dd => {
-                if (dd !== dropdownMenu && dd.getAttribute('data-parent') === parentCard.getAttribute('class')) {
+                if (dd !== dropdownMenu) {
                     dd.style.display = 'none';
-                    const toggle = document.querySelector(`.card-dropdown-toggle.show`);
-                    if(toggle){
-                        toggle.classList.remove('show');
-                    }
                 }
             });
+            
             allToggles.forEach(toggle => {
                 if (toggle !== element) {
                     toggle.classList.remove('show');
                 }
             });
 
-
+            // Toggle the current dropdown
             dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
             element.classList.toggle('show');
         }
@@ -357,6 +395,37 @@
                 }
             });
         }
+
+        // Functionality for salary checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle checkbox change events for salary payments
+            const salaryCheckboxes = document.querySelectorAll('.salary-checkbox');
+            salaryCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        const employeeId = this.getAttribute('data-employee-id');
+                        const row = document.getElementById('employee-row-' + employeeId);
+                        const form = this.closest('form');
+                        
+                        if (confirm('Are you sure you want to mark this salary as paid?')) {
+                            // Add visual feedback to show processing
+                            row.classList.add('table-warning', 'opacity-50');
+                            
+                            // Submit the form
+                            form.submit();
+                            
+                            // Remove the row after 3 seconds
+                            setTimeout(() => {
+                                row.style.display = 'none';
+                            }, 3000);
+                        } else {
+                            // Uncheck if cancelled
+                            this.checked = false;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

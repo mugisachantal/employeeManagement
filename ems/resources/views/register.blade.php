@@ -15,7 +15,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
+                    <div class="card-header">{{ __('Register Employee') }}</div>
     
                     <div class="card-body">
                         <form method="POST" action="{{ route('register') }}">
@@ -51,12 +51,12 @@
                             
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Salary') }}</label>
+                                <label for="salary" class="col-md-4 col-form-label text-md-end">{{ __('Salary') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="salary" value="{{ old('salary') }}" required autocomplete="" autofocus>
+                                    <input id="salary" type="text" class="form-control @error('salary') is-invalid @enderror" name="salary" value="{{ old('salary') }}" required autocomplete="" autofocus>
     
-                                    @error('name')
+                                    @error('salary')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -64,10 +64,10 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Date of birth') }}</label>
+                                <label for="date_of_birth" class="col-md-4 col-form-label text-md-end">{{ __('Date of birth') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="name" type="date" class="form-control @error('name') is-invalid @enderror" name="date_of_birth" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                    <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="name" autofocus>
     
                                     @error('date_of_birth')
                                         <span class="invalid-feedback" role="alert">
@@ -79,10 +79,10 @@
     
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Sex') }}</label>
+                                <label for="sex" class="col-md-4 col-form-label text-md-end">{{ __('Sex') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('sex') is-invalid @enderror" name="sex" value="{{ old('M') }}" required autocomplete="M" autofocus>
+                                    <input id="sex" type="text" class="form-control @error('sex') is-invalid @enderror" name="sex" value="{{ old('sex') }}" required autocomplete="sex" autofocus>
     
                                     @error('sex')
                                         <span class="invalid-feedback" role="alert">
@@ -95,12 +95,12 @@
     
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
+                                <label for="department" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="department" value="{{ old('department') }}" required autocomplete="name" autofocus>
+                                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}" required autocomplete="department" autofocus>
     
-                                    @error('date_of_birth')
+                                    @error('Department')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -110,27 +110,7 @@
     
     
     
-                            <div class="mb-3 row">
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-    
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-    
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-    
-                            <div class="mb-3 row">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-    
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
+                            
     
                             <div class="mb-0 row">
                                 <div class="col-md-6 offset-md-4">

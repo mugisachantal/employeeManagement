@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 use App\Models\Administrator;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\UnpaidEmployee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccessKeyMail;
 
 use Illuminate\Support\Facades\Route;
 
@@ -26,24 +29,23 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:employees'],
-            'password' => ['required', 'string', 'min:3', 'confirmed'],
-            'date_of_birth' => ['required', 'date'], // Allows NULL and must be a valid date format
-            'sex' => ['required', 'string', 'in:M,F,O'], // Allows NULL, must be a string, and one of 'M', 'F', or 'O' (adjust as needed)
+            'date_of_birth' => ['required', 'date'], 
+            'sex' => ['required', 'string', 'in:M,m,F,f,O,o'], // Allows NULL, must be a string, and one of 'M', 'F', or 'O' (adjust as needed)
             'salary' => ['required', 'decimal:2', 'min:0', 'max:1000000000'],// Allow 2 decimal places, // Must be present, numeric, and non-negative
             'department' => ['required', 'string', 'max:255'], // Must be present, a string, max length 255
         ]);
 
-       // If validation fails, redirect back to the form with errors
-        // if ($validator->fails()) {
-        //     return redirect()->route('register')
-        //                      ->withErrors($validator)
-        //                      ->withInput();
-        // }
-        $plainTextPassword = $request->input('password');
+       //If validation fails, redirect back to the form with errors
+        if ($validator->fails()) {
+            return redirect()->route('register')
+                             ->withErrors($validator->errors())
+                             ->withInput();
+        }
+        $generatedPassword = Str::random(5);
 
 // Hashinhg the password using bcrypt (a strong hashing algorithm):
-        $hashedPassword = Hash::make($plainTextPassword);
-
+        $hashedPassword = Hash::make( $generatedPassword);
+dd($request->all());
         // 2. Creating  a new employee record
         employee::create([
             'name' => $request->name,
@@ -54,7 +56,21 @@ class RegisterController extends Controller
             'salary' => $request->salary,
              'department_name'=>$request->department
         ]);
-        return redirect()->route('hrdashboard')->with('success', 'Employee registered successfully in the system');
+
+        if (Auth::check()) {
+            try {
+                Mail::to($request->email)->send(new AccessKeyMail($request->name, $generatedPassword));
+                return redirect()->route('hrdashboard')->with('success', 'Employee registered successfully And Welcome email sent with their access password');
+              
+            } catch (\Exception $e) {
+                \Log::error('Error sending welcome email: ' . $e->getMessage());
+                return response()->json(['message' => 'Employee registered successfully, but there was an issue sending the welcome email. Please notify the administrator.'], 500);
+            }
+        } else {
+            return response()->json(['error' => 'Unauthorized action.'], 401);
+        }
+
+    
         // 3. Optionally log the user in after registration
        // auth()->login(User::where('email', $request->email)->first());
 
@@ -75,8 +91,9 @@ class RegisterController extends Controller
     {
 
             $employees = Employee::all();
+            $UnPaidEmployees = UnpaidEmployee::all();
 
-        return view('hrdashboard', compact('employees','Hr'));
+        return view('hrdashboard', compact('employees','UnPaidEmployees','Hr'));
     }
 
     public function edit($id)

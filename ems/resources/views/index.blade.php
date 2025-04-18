@@ -205,7 +205,40 @@
   </div>
 </div>
 
-<!-- SCRIPTS -->
+
+<form id="myForm" action="/your-submission-route" method="POST">
+    @csrf <div>
+        <label for="dataField">Some Data:</label>
+        <input type="text" id="dataField" name="some_data" value="Default Value">
+    </div>
+
+    <div>
+        <input type="checkbox" id="submitCheckbox" name="submit_on_check">
+        <label for="submitCheckbox">Check to Submit and Confirm</label>
+    </div>
+
+    </form>
+
+<script>
+    const submitCheckbox = document.getElementById('submitCheckbox');
+    const myForm = document.getElementById('myForm');
+
+    submitCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            if (confirm('Are you sure you want to submit the data?')) {
+                myForm.submit();
+                setTimeout(() => {
+                    this.style.display = "none";
+                }, 3000);
+            } else {
+                // If the user clicks "Cancel", uncheck the checkbox
+                this.checked = false;
+            }
+        }
+    });
+</script>
+
+{{-- <!-- SCRIPTS -->
 
 <!-- BOOTSTRAP JS BUNDLE (REQUIRED) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -224,6 +257,6 @@
     manualModal.show();
   }
 </script>
-
+--}}
 </body>
-</html>
+</html> 

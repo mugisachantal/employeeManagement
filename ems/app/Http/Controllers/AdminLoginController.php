@@ -64,6 +64,6 @@ class AdminLoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect to the login page after logout
-        return redirect()->route('login');
+        return redirect()->route('index');
     }
 }
