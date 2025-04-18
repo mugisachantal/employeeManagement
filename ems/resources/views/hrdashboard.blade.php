@@ -17,6 +17,8 @@
             height: 100vh;
             overflow-y: auto;
             border-right: 1px solid #dee2e6;
+            display: flex; /* Enable flexbox for sidebar content */
+            flex-direction: column; /* Stack sidebar items vertically */
         }
         .admin-sidebar .nav-link {
             padding: 12px 16px;
@@ -110,13 +112,17 @@
         .dropdown-container {
             position: relative;
         }
+        .sidebar-user-dropdown {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
     </style>
 </head>
 <body>
     <header class="bg-primary text-white py-3">
         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-center">
-                <div class="container-fluid justify-content-center">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between">
+                <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="/">
                         <img src="https://github.com/mdo.png" alt="MotorVitaGlobal Logo" height="40" class="rounded-circle me-2">
                         <h1 class="m-0 fw-bold fs-3">MotorVitaGlobal</h1>
@@ -129,25 +135,52 @@
                             <li class="nav-item">
                                 <a class="nav-link active fs-5" aria-current="page" href="/"><i class="bi bi-house-fill me-2"></i> Home</a>
                             </li>
-                        </ul>
+                            </ul>
                     </div>
+                    @auth('admin')
+                        <form action="{{ route('logout') }}" method="POST" class="d-flex align-items-center">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light btn-sm">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            </button>
+                        </form>
+                    @elseif(auth()->check() && auth()->getDefaultDriver() === 'employee')
+                        <form action="{{ route('logout') }}" method="POST" class="d-flex align-items-center">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light btn-sm">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            </button>
+                        </form>
+                    @endauth
                 </div>
             </nav>
         </div>
     </header>
 
     <div class="container-fluid d-flex">
-        <div class="admin-sidebar p-3">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <i class="bi bi-speedometer2 me-2 fs-5"></i>
-                <span class="fs-5 fw-semibold">Admin Panel</span>
-            </a>
+        <div class="admin-sidebar p-3 d-flex flex-column">
+            <div class="sidebar-user-dropdown mb-3">
+                <div class="dropdown">
+                    WELCOME ADMIN  
+                    <a href="{{ route('editing',-1)}}" class="d-flex align-items-center link-dark text-decoration-none " >
+                      <img src="{{ asset('storage/' . $Hr->profile_picture) }}" alt="HR profile picture" width="50" height="50" class="rounded-circle me-1">
+                        <strong> {{$Hr->name}}</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="#" class="nav-link link-dark active" aria-current="page">
                         <i class="bi bi-graph-up me-2"></i>
-                        Dashboard 
+                        Dashboard  
                     </a>
                 </li>
                 <li>
@@ -160,14 +193,12 @@
                     <a href="{{route("employeelist",2)}}" class="nav-link link-dark">
                         <i class="bi bi-pencil-square me-2"></i>
                         View List of Employees
-                        
                     </a>
                 </li>
                 <li>
                     <a href="{{route("employeelist",1)}}" class="nav-link link-dark">
                         <i class="bi bi-trash-fill me-2"></i>
                         Update Employee Profile
-                       
                     </a>
                 </li>
                 <li>
@@ -196,20 +227,9 @@
                 </li>
             </ul>
             <hr>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="Admin Avatar" width="32" height="32" class="rounded-circle me-2">
-                    <strong>Admin 50</strong>
-                </a>
-                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                </ul>
-            </div>
+            {{-- The dropdown is now at the top --}}
         </div>
+
         <div class="admin-content">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -217,7 +237,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
+           
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
                 <div class="col">
                     <div class="dashboard-card border-primary">
@@ -318,6 +338,25 @@
                 allToggles.forEach(toggle => toggle.classList.remove('show'));
             }
         });
+
+        // Functionality for the sidebar user dropdown
+        const sidebarDropdownToggle = document.querySelector('#dropdownUser2');
+        const sidebarDropdownMenu = document.querySelector('.sidebar-user-dropdown .dropdown-menu');
+
+        if (sidebarDropdownToggle && sidebarDropdownMenu) {
+            sidebarDropdownToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                sidebarDropdownMenu.classList.toggle('show');
+                sidebarDropdownToggle.setAttribute('aria-expanded', sidebarDropdownMenu.classList.contains('show'));
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.sidebar-user-dropdown')) {
+                    sidebarDropdownMenu.classList.remove('show');
+                    sidebarDropdownToggle.setAttribute('aria-expanded', false);
+                }
+            });
+        }
     </script>
 </body>
 </html>

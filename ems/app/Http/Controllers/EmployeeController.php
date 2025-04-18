@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Support\Facades\Mail;
@@ -9,9 +10,9 @@ use App\Mail\CVUploaded;
 class EmployeeController extends Controller
 {
     // Display employee dashboard
-    public function dashboard()
+    public function dashboard(Employee $employee)
     {
-        return view('employeedashboard'); // Return the employee dashboard view
+        return view('employeedashboard',compact('employee')); // Return the employee dashboard view
     }
 
     // View available jobs

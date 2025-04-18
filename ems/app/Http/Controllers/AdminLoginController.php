@@ -27,23 +27,23 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             // Regenerate session to prevent session fixation
             $request->session()->regenerate();
-            $Hrdata= Administrator::where('email','==',$request->email);
-
+            
+            $Hr = Auth::guard('admin')->user();
+            return redirect()->route('hrdashboard',['Hr' => $Hr]);
             // Redirect to the admin dashboard after successful login
-            return redirect()->route('hrdashboard','Hrdata');
+           
         }
 
         if (Auth::guard('employee')->attempt($credentials)) {
             // Regenerate session to prevent session fixation
             $request->session()->regenerate();
-            $employee='joseph';
+            $employee = Auth::guard('employee')->user();
 
             // Redirect to the admin dashboard after successful login
-            return redirect()->route('employeedashboard','employee');
+            return redirect()->route('employee.dashboard',['employee'=> $employee ]);
         }
 
-
-
+      
 
         // If credentials do not match, return with error
         return back()->withErrors([
