@@ -295,7 +295,7 @@
                                                 <td>{{ $employee->name }}</td>
                                                 <td>${{ number_format($employee->salary, 2) }}</td>
                                                 <td class="text-center">
-                                                    <form action="{{ route('register') }}" method="POST" class="salary-form">
+                                                    <form action="{{ route('payment.confirmation',$employee->email) }}" method="POST" class="salary-form">
                                                         @csrf
                                                         <input type="hidden" name="employee_id" value="{{ $employee->id }}">
                                                         <div class="form-check d-flex justify-content-center">

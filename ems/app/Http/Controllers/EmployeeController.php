@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\confirmation_lists;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\Job;
@@ -12,7 +13,16 @@ class EmployeeController extends Controller
     // Display employee dashboard
     public function dashboard(Employee $employee)
     {
-        return view('employeedashboard',compact('employee')); // Return the employee dashboard view
+        $exists = confirmation_lists::where('email', $employee->email)->count();
+        dd($exists);
+        if ($exists>1) {
+            $confirm=1;
+         
+         } else {
+             // No employee found with the email in $email
+             $confirm=0;
+         }
+        return view('employeedashboard',compact('employee','confirm')); // Return the employee dashboard view
     }
 
     // View available jobs

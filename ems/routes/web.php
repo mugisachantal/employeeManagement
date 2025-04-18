@@ -29,6 +29,7 @@ Route::get('/edashboard/{employee}', [EmployeeController::class, 'dashboard'])->
 // })->name('index');
 //salary tracking route and 
   Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
+  Route::post('/paymentconfirmation/{email}', [SalaryController::class, 'paymentConfirmation'])->name('payment.confirmation')->middleware('auth:employeee');;
   // Job posting routes
   Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form') ->middleware('auth:admin');
   Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');

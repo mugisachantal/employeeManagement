@@ -1,52 +1,3 @@
-
-
-<!--
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Employee Dashboard</h2>
-        <div class="list-group">
-            <a href="{{ route('employee.jobs') }}" class="list-group-item list-group-item-action">View Jobs</a>
-            <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#uploadCvModal">Upload CV</a>
-        </div>
-    </div>
-
-    // Modal for Upload CV
-    <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadCvModalLabel">Upload CV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('employee.upload.cv') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="cv" class="form-label">Select CV (PDF)</label>
-                            <input type="file" name="cv" accept="application/pdf" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Upload CV</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
-<!-- resources/views/employeedashboard.blade.php -->
-<!-- resources/views/employeedashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -54,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
 
-    <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
@@ -69,6 +19,7 @@
             width: 220px;
             background-color: #343a40;
             padding-top: 30px;
+            color: #ffffff; /* Ensure text in sidebar is white */
         }
         .sidebar .nav-link {
             color: #ffffff;
@@ -109,13 +60,13 @@
             height: 150px;
             margin: 0 auto 30px auto;
         }
-        
+
         .profile-img-container img {
             object-fit: cover;
             width: 100%;
             height: 100%;
         }
-        
+
         .no-profile-placeholder {
             background-color: #e9ecef;
             width: 100%;
@@ -127,15 +78,42 @@
             font-size: 0.9rem;
             text-align: center;
         }
+
+        /* Styles for the Confirmation Form within the content area */
+        .confirmation-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .confirmation-options label {
+            margin-right: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .confirm-button {
+            color: #28a745; /* Green for confirm */
+        }
+        .reject-button {
+            color: #dc3545; /* Red for reject */
+        }
+        .confirmation-title {
+            color: #007bff; /* Blue for title */
+            margin-bottom: 15px;
+        }
+        .confirmation-message {
+            color: #555;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar d-flex flex-column">
-        <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
+        <h4><i class="fas fa-user-circle me-2"></i>Employee {{$confirm}}</h4>
         <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
-        <a class="nav-link" href="{{route('update.profile',$employee->id)}}"><i class="fas fa-home me-2"></i>update profile</a>
+        <a class="nav-link" href="{{route('update.profile',$employee->id)}}"><i class="fas fa-user-edit me-2"></i>Update Profile</a>
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" data-bs-toggle="dropdown">
                 <i class="fas fa-briefcase me-2"></i>Jobs
@@ -150,7 +128,6 @@
         <a class="nav-link" href="#"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
     </div>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Employee System</a>
@@ -170,80 +147,101 @@
         </div>
     </nav>
 
-    <!-- Content -->
     <div class="content">
         @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
-
-<h2>Welcome {{$employee->name }}</h2>
-<div class="text-center">
-    <div class="profile-img-container">
-        @if ($employee->profile_picture)
-            <img src="{{ asset('storage/' . $employee->profile_picture) }}" 
-                 alt="Profile Picture" 
-                 class="img-fluid rounded-circle border border-primary shadow">
-        @else
-            <div class="no-profile-placeholder rounded-circle border border-primary shadow">
-                No Profile Picture
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-    </div>
-</div>
+
+        <h2>Welcome {{$employee->name }}</h2>
+        <div class="text-center">
+            <div class="profile-img-container">
+                @if ($employee->profile_picture)
+                    <img src="{{ asset('storage/' . $employee->profile_picture) }}"
+                         alt="Profile Picture"
+                         class="img-fluid rounded-circle border border-primary shadow">
+                @else
+                    <div class="no-profile-placeholder rounded-circle border border-primary shadow">
+                        No Profile Picture
+                    </div>
+                @endif
+            </div>
+        </div>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
-        
-    <!-- Upload CV Modal -->
-    <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Upload Your CV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  @if($confirm==1)
+        <div class="confirmation-container">
+            <h3 class="confirmation-title">Confirm Action</h3>
+            <p class="confirmation-message">Please confirm or reject the following action.</p>
+            <form action="/handle-confirmation" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label class="d-block font-weight-bold mb-2">Your Decision:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="confirmation_status" id="confirmRadioInline" value="confirm" required>
+                        <label class="form-check-label confirm-button" for="confirmRadioInline">Confirm</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="confirmation_status" id="rejectRadioInline" value="reject" required>
+                        <label class="form-check-label reject-button" for="rejectRadioInline">Reject</label>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('employee.upload.cv') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="cv" class="form-label">Choose PDF File</label>
-                            <input type="file" name="cv" id="cv" class="form-control" accept="application/pdf" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description (Optional)</label>
-                            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Upload CV</button>
-                    </form>
+                <button type="submit" class="btn btn-primary">Submit Decision</button>
+            </form>
+        </div>
+    @endif
+        <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Upload Your CV</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ route('employee.upload.cv') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="cv" class="form-label">Choose PDF File</label>
+                                <input type="file" name="cv" id="cv" class="form-control" accept="application/pdf" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description (Optional)</label>
+                                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Upload CV</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const profilePictureWrapper = document.getElementById('profilePictureWrapper');
-            const headerHeight = document.querySelector('header').offsetHeight;
+            const headerHeight = document.querySelector('nav.navbar').offsetHeight; // Target the navbar
             const availableHeight = window.innerHeight - headerHeight - 40; // Adjust 40 for margins
 
-            // Calculate a relative size (e.g., 30% of available height, with a maximum)
-            let size = Math.min(availableHeight * 0.3, 200); // Adjust 0.3 and 200 as needed
+            let size = Math.min(availableHeight * 0.3, 150); // Adjusted max size for content area
 
-            profilePictureWrapper.style.width = size + 'px';
-            profilePictureWrapper.style.height = size + 'px';
+            if (profilePictureWrapper) {
+                profilePictureWrapper.style.width = size + 'px';
+                profilePictureWrapper.style.height = size + 'px';
+            }
         });
 
         window.addEventListener('resize', function() {
             const profilePictureWrapper = document.getElementById('profilePictureWrapper');
-            const headerHeight = document.querySelector('header').offsetHeight;
+            const headerHeight = document.querySelector('nav.navbar').offsetHeight;
             const availableHeight = window.innerHeight - headerHeight - 40;
 
-            let size = Math.min(availableHeight * 0.3, 200);
+            let size = Math.min(availableHeight * 0.3, 150);
 
-            profilePictureWrapper.style.width = size + 'px';
-            profilePictureWrapper.style.height = size + 'px';
+            if (profilePictureWrapper) {
+                profilePictureWrapper.style.width = size + 'px';
+                profilePictureWrapper.style.height = size + 'px';
+            }
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
