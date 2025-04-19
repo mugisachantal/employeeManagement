@@ -207,24 +207,45 @@
                         Delete Employee Record
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-gear-fill me-2"></i>
-                        Update Company Policy
-                    </a>
-                </li>
+                
                 <li>
                     <a href="{{route('job.form')}}" class="nav-link link-dark">
                         <i class="bi bi-briefcase-fill me-2"></i>
                         Post Jobs
                     </a>
                 </li>
+
                 <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-question-circle-fill me-2"></i>
-                        Help
+               <a href="{{ route('admin.applications') }}" class="nav-link link-dark">
+                <i class="bi bi-briefcase-fill me-2"></i>
+                 View Applications
+               </a>
+               </li>
+               <li>
+                    <a href="{{ route('admin.company-policies.create') }}" class="nav-link link-dark">
+                        <i class="bi bi-upload me-2"></i>
+                        Upload Company Policies
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.announcements.create') }}" class="nav-link link-dark">
+                        <i class="bi bi-upload me-2"></i>
+                        Upload Announcements
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.company-policies.list') }}" class="nav-link link-dark">
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        Uploaded Company Policies
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.announcements.list') }}" class="nav-link link-dark">
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        Uploaded Announcements
+                    </a>
+                </li>
+                
             </ul>
             <hr>
             {{-- The dropdown is now at the top --}}
@@ -262,6 +283,13 @@
                         <p class="fs-3 fw-bold">{{ count($employees ?? []) }}</p>
                     </div>
                 </div>
+                <div class="col">
+    <div class="dashboard-card border-danger">
+        <h5><i class="bi bi-file-earmark-text-fill me-2"></i> Total Applications</h5>
+        <p class="fs-3 fw-bold">{{ \App\Models\Application::count() }}</p>
+    </div>
+</div>
+
                 <div class="col">
                     <div class="dashboard-card border-warning">
                         <h5><i class="bi bi-currency-dollar me-2"></i> Pending Salary</h5>

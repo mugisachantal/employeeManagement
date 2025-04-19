@@ -1,52 +1,6 @@
 
 
-<!--
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Employee Dashboard</h2>
-        <div class="list-group">
-            <a href="{{ route('employee.jobs') }}" class="list-group-item list-group-item-action">View Jobs</a>
-            <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#uploadCvModal">Upload CV</a>
-        </div>
-    </div>
 
-    // Modal for Upload CV
-    <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadCvModalLabel">Upload CV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('employee.upload.cv') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="cv" class="form-label">Select CV (PDF)</label>
-                            <input type="file" name="cv" accept="application/pdf" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Upload CV</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
-<!-- resources/views/employeedashboard.blade.php -->
-<!-- resources/views/employeedashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -115,14 +69,11 @@
             <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" data-bs-toggle="dropdown">
                 <i class="fas fa-briefcase me-2"></i>Jobs
             </a>
-            <ul class="dropdown-menu bg-dark">
-                <li><a class="dropdown-item text-white bg-dark" href="{{ route('employee.jobs') }}">View Jobs</a></li>
-                <li><a class="dropdown-item text-white bg-dark" href="#" data-bs-toggle="modal" data-bs-target="#uploadCvModal">Upload CV</a></li>
-            </ul>
+            
         </div>
         <a class="nav-link" href="#"><i class="fas fa-id-card me-2"></i>View Details</a>
-        <a class="nav-link" href="#"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
-        <a class="nav-link" href="#"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
+        <a class="nav-link" href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
+        <a class="nav-link" href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
     </div>
 
     <!-- Navbar -->

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,14 +28,6 @@
       height: 40px;
     }
 
-    .nav-link, .dropdown-toggle {
-      color: white !important;
-    }
-    .navbar-nav .nav-item {
-  margin-right: 25px; /* Adjust as needed */
-}
-
-
     .hero-section {
       height: 90vh;
       display: flex;
@@ -61,17 +54,6 @@
       padding: 15px 0;
     }
 
-    .card {
-      background-color: rgb(141, 137, 137);
-      color: white;
-      border: none;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
     .btn-apply {
       background-color: #ffffff;
       color: rgb(89, 89, 215);
@@ -81,13 +63,24 @@
       border-radius: 5px;
     }
 
-    .btn-apply:hover {
-      background-color: #dddddd;
-    }
-
     .advertisement-modal .modal-content {
       background-color: darkgray;
       color: white;
+    }
+
+    .apply-form {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .apply-form input, .apply-form textarea {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -95,25 +88,21 @@
 
   <!-- NAVIGATION -->
   <nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-  <a class="navbar-brand" href="#">
-    <img src="/images/logo.png" class="me-2 rounded-circle" style="height: 40px; width: 40px;" alt="Logo">
-    MotorVitaGlobal
-  </a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</div>
-
-
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <a class="nav-link" href="{{ route('login') }}">Login</a>
-
-        </ul>
-      </div>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" class="me-2 rounded-circle" alt="Logo">
+        MotorVitaGlobal
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <a class="nav-link" href="{{ route('login') }}">Login</a>
+      </ul>
     </div>
   </nav>
 
@@ -122,7 +111,7 @@
     <h1 class="hero-title">MotorVitaGlobal Company</h1>
     <p>A car company that speaks Volumes, we ride on legacy!!!!</p>
     <p>Get behind the wheel of your dream ride! A collection of affordable cars that fit your budget and exceed your expectations!</p>
-    <button class="btn btn-apply mt-3" onclick="showAdvertisement()">🔔 View Advertisements</button>
+    <button class="btn btn-apply mt-3" data-bs-toggle="modal" data-bs-target="#advertisementModal">🔔 View Announcements</button>
   </section>
 
   <!-- ABOUT US CARDS SECTION -->
@@ -149,81 +138,97 @@
           <p class="card-text">Spacious and safe SUVs built for long family trips and unforgettable adventures.</p>
         </div>
       </div>
-      <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-3s">
-        <div class="card p-3">
-          <h5 class="card-title">Luxury Line</h5>
-          <p class="card-text">Elegant interiors, smooth rides, and a statement of class. Drive with luxury and grace.</p>
-        </div>
-      </div>
-      <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-4s">
-        <div class="card p-3">
-          <h5 class="card-title">Urban Go</h5>
-          <p class="card-text">Compact, fuel-efficient cars perfect for city commutes and busy lifestyles.</p>
-        </div>
-      </div>
-      <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-5s">
-        <div class="card p-3">
-          <h5 class="card-title">Off-Road Kings</h5>
-          <p class="card-text">Built for the bold. Tackle any terrain with our rugged off-road vehicle series.</p>
-        </div>
-      </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-  <div class="container">
-    <p>&copy; 2025 MotorVitaGlobal. All rights reserved.</p>
-    <div class="mt-3">
-      <a href="https://x.com" target="_blank" class="text-white me-3"><i class="fab fa-x-twitter fa-lg"></i></a>
-      <a href="https://facebook.com" target="_blank" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-      <a href="https://instagram.com" target="_blank" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-      <a href="https://wa.me/2348000000000" target="_blank" class="text-white me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
-      <a href="https://linkedin.com" target="_blank" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
+    <div class="container">
+      <p>&copy; 2025 MotorVitaGlobal. All rights reserved.</p>
+      <div class="mt-3">
+        <a href="https://x.com" target="_blank" class="text-white me-3"><i class="fab fa-x-twitter fa-lg"></i></a>
+        <a href="https://facebook.com" target="_blank" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="https://instagram.com" target="_blank" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="https://wa.me/2348000000000" target="_blank" class="text-white me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
+      </div>
     </div>
-  </div>
-</footer>
-
-
+  </footer>
 
   <!-- ADVERTISEMENT MODAL -->
-<div class="modal fade advertisement-modal" id="advertisementModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4">
-      <div class="modal-header">
-        <h5 class="modal-title">🔔 Advertisement!!!</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h5>Available Jobs</h5>
-        <p><strong>Software Developer</strong><br>Location: Remote<br>Experience: 2+ years</p>
-        <a href="#" class="btn btn-apply mb-3">Apply</a>
-        <hr/>
-        <p><strong>Car Technician</strong><br>Location: On-Site - Lagos</p>
-        <a href="#" class="btn btn-apply">Apply</a>
+  <div class="modal fade advertisement-modal" id="advertisementModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content p-4">
+        <div class="modal-header">
+          <h5 class="modal-title">🔔 Advertisement!!!</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="job-list">
+          <!-- Jobs will be dynamically inserted here -->
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- SCRIPTS -->
+  
 
-<!-- BOOTSTRAP JS BUNDLE (REQUIRED) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- CUSTOM SCRIPT -->
-<script>
-  // Automatically show modal on page load
-  window.addEventListener('load', function () {
-    const autoModal = new bootstrap.Modal(document.getElementById('advertisementModal'));
-    autoModal.show();
-  });
+  <script>
+    let currentJobId = null;
 
-  // Function for the button to show modal on click
-  function showAdvertisement() {
-    const manualModal = new bootstrap.Modal(document.getElementById('advertisementModal'));
-    manualModal.show();
-  }
-</script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const adModal = new bootstrap.Modal(document.getElementById('advertisementModal'));
+      adModal.show();
+
+      fetch('/api/jobs') // Adjust this to your actual API endpoint
+    .then(response => response.json())
+    .then(data => {
+        let jobList = '';
+        data.forEach(job => {
+            jobList += `
+              <div>
+                <strong>${job.name}</strong><br>
+                Experience: ${job.experience}<br>
+                Education: ${job.education}<br><br>
+                <a href="/apply/${job.id}" class="btn btn-apply mb-3">Apply</a>
+                <hr/>
+              </div>
+            `;
+        });
+        document.getElementById('job-list').innerHTML = jobList;
+    })
+    .catch(error => {
+        console.error('Error fetching job data:', error);
+    });
+    });
+
+    function showApplyForm(jobId) {
+      currentJobId = jobId;
+      document.getElementById('applyForm').style.display = 'block';
+      document.getElementById('job_id').value = jobId;
+    }
+
+    document.getElementById('applicationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      formData.append('job_id', currentJobId);
+
+      fetch('{{ route('apply.store') }}', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert('Application Submitted Successfully');
+        document.getElementById('applyForm').style.display = 'none';
+        this.reset();
+      })
+      .catch(err => alert('There was an error submitting your application.'));
+    });
+  </script>
 
 </body>
 </html>
