@@ -174,16 +174,16 @@
         <div class="confirmation-container">
             <h3 class="confirmation-title">Confirm Action</h3>
             <p class="confirmation-message">Please confirm or reject the following action.</p>
-            <form action="/handle-confirmation" method="POST">
+            <form action="{{route('payment.confirmed',$employee->id)}}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label class="d-block font-weight-bold mb-2">Your Decision:</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="confirmation_status" id="confirmRadioInline" value="confirm" required>
+                        <input class="form-check-input" type="radio" name="confirmation_status" id="confirmRadioInline" value="true" required>
                         <label class="form-check-label confirm-button" for="confirmRadioInline">Confirm</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="confirmation_status" id="rejectRadioInline" value="reject" required>
+                        <input class="form-check-input" type="radio" name="confirmation_status" id="rejectRadioInline" value="false" required>
                         <label class="form-check-label reject-button" for="rejectRadioInline">Reject</label>
                     </div>
                 </div>

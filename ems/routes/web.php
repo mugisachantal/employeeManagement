@@ -27,16 +27,18 @@ Route::get('/edashboard/{employee}', [EmployeeController::class, 'dashboard'])->
 // Route::get('/', function () {
 //     return view('index');
 // })->name('index');
-//salary tracking route and 
+
+//salary  tracking and management route 
   Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
-  Route::post('/paymentconfirmation/{email}', [SalaryController::class, 'paymentConfirmation'])->name('payment.confirmation')->middleware('auth:employeee');;
+  Route::post('/paymentconfirmation/{email}', [SalaryController::class, 'paymentConfirmation'])->name('payment.confirmation')->middleware('auth:admin');
+  Route::post('/paymentconfirmed/{id}', [SalaryController::class, 'paymentConfirmed'])->name('payment.confirmed')->middleware('auth:employee');
   // Job posting routes
   Route::get('/admin/post-job', [JobController::class, 'showForm'])->name('job.form') ->middleware('auth:admin');
   Route::post('/admin/post-job', [JobController::class, 'upload'])->name('job.upload')->middleware('auth:admin');
   
   // employee profile  management routes
-  Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ->middleware('auth:admin');;
-  Route::post('/register', [RegisterController::class, 'register']);
+  Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ->middleware('auth:admin');
+  Route::post('/register', [RegisterController::class, 'register'])->middleware('auth:admin');
   Route::get('/hrdashboard/{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
   Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
   Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');

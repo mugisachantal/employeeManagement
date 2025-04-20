@@ -22,6 +22,11 @@ class Employee extends AuthenticatableBase implements Authenticatable
         'name',
         'email',
         'password',
+        'date_of_birth',
+        'salary',
+        'department_name',
+        'sex'
+
         // Add other fillable fields for your employees table
     ];
 

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unpaid_employees', function (Blueprint $table) {
+        Schema::create('s_month_statuses', function (Blueprint $table) {
             $table->id();
-       $table->string('name');
-        $table->string('email');
-        $table->decimal('salary', 10, 0);
-        $table->timestamps();
-    });
+            $table->string('month');
+            $table->integer('status');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('s_month_statuses');
     }
 };

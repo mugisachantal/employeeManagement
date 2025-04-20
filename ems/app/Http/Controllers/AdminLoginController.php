@@ -42,6 +42,7 @@ class AdminLoginController extends Controller
             // Redirect to the admin dashboard after successful login
             return redirect()->route('employee.dashboard',['employee'=> $employee ]);
         }
+       
 
       
 

@@ -8,7 +8,7 @@ class confirmation_lists extends Model
 {
     use HasFactory;
 
-    protected $table = 'unpaid_employees'; 
+    protected $table = 'confirmation_lists'; 
     protected $fillable = [
         'name',
         'salary',

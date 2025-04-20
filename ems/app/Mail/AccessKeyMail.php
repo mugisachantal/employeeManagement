@@ -50,7 +50,7 @@ class AccessKeyMail extends Mailable
         $hrName = Auth::user()->name;   // Assuming the authenticated user has a name
 
         return $this->from($hrEmail, $hrName)
-                    ->markdown('emails.accesspassword') // Assuming accesspassword.blade.php is in resources/views/emails
+                    ->markdown('accessspassword') // Assuming accesspassword.blade.php is in resources/views/emails
                     ->with(['employeeName' => $this->employeeName, 'generatedPassword' => $this->generatedPassword]);
     }
 

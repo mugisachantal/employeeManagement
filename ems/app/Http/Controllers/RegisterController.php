@@ -5,6 +5,7 @@ use App\Models\Administrator;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\UnpaidEmployee;
+use App\Models\paid_employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +46,7 @@ class RegisterController extends Controller
 
 // Hashinhg the password using bcrypt (a strong hashing algorithm):
         $hashedPassword = Hash::make( $generatedPassword);
-dd($request->all());
+
         // 2. Creating  a new employee record
         employee::create([
             'name' => $request->name,
@@ -56,11 +57,12 @@ dd($request->all());
             'salary' => $request->salary,
              'department_name'=>$request->department
         ]);
-
+        
         if (Auth::check()) {
             try {
                 Mail::to($request->email)->send(new AccessKeyMail($request->name, $generatedPassword));
-                return redirect()->route('hrdashboard')->with('success', 'Employee registered successfully And Welcome email sent with their access password');
+                return back();
+               // return redirect()->route('hrdashboard')->with('success', 'Employee registered successfully And Welcome email sent with their access password');
               
             } catch (\Exception $e) {
                 \Log::error('Error sending welcome email: ' . $e->getMessage());
@@ -71,20 +73,13 @@ dd($request->all());
         }
 
     
-        // 3. Optionally log the user in after registration
-       // auth()->login(User::where('email', $request->email)->first());
-
-        // 4. Redirect the user to a specific page (e.g., dashboard)
-        
     }
 
     public function showEmployeeList($T)
     {
         $employeesByDepartment = Employee::all()
             ->groupBy('department_name');
-           
-
-        return view('employeelist', compact('employeesByDepartment',"T"));
+            return view('employeelist', compact('employeesByDepartment',"T"));
     }
 
     public function test(Administrator $Hr)
@@ -92,8 +87,9 @@ dd($request->all());
 
             $employees = Employee::all();
             $UnPaidEmployees = UnpaidEmployee::all();
+            $paidemployees = paid_employee::all();
 
-        return view('hrdashboard', compact('employees','UnPaidEmployees','Hr'));
+        return view('hrdashboard', compact('employees','UnPaidEmployees','Hr','paidemployees'));
     }
 
     public function edit($id)

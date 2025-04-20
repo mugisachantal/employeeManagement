@@ -9,7 +9,7 @@ class paid_employee extends Model
 {
     use HasFactory;
 
-    protected $table = 'unpaid_employees'; 
+    protected $table = 'paid_employees'; 
     protected $fillable = [
         'name',
         'salary',

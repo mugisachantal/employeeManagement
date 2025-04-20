@@ -324,11 +324,11 @@
                         <h5><i class="bi bi-check-circle-fill me-2"></i> Paid Employees</h5>
                         <div class="dropdown-container">
                             <div class="card-dropdown-toggle" onclick="toggleDropdown(this)">
-                                View Paid <span class="badge bg-info text-white rounded-pill ms-2">{{ count($employees ?? []) }}</span>
+                                Paid Employees<span class="badge bg-info text-white rounded-pill ms-2">{{ count($paidemployees ?? []) }}</span>
                             </div>
                             <ul class="dropdown-menu" data-parent=".dashboard-card">
-                                @forelse ($employees as $employee)
-                                    <li><a class="dropdown-item" href="#">{{ $employee->name }}</a></li>
+                                @forelse ($paidemployees as $paidemployee)
+                                    <li><a class="dropdown-item" href="#">{{ $paidemployee->name }}</a></li>
                                 @empty
                                     <li><span class="dropdown-item">No paid employees listed</span></li>
                                 @endforelse

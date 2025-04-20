@@ -13,9 +13,11 @@ class EmployeeController extends Controller
     // Display employee dashboard
     public function dashboard(Employee $employee)
     {
-        $exists = confirmation_lists::where('email', $employee->email)->count();
-        dd($exists);
-        if ($exists>1) {
+        $exists = confirmation_lists::where('email', $employee->email)->exists();
+     
+        
+      
+        if ($exists) {
             $confirm=1;
          
          } else {
@@ -29,6 +31,7 @@ class EmployeeController extends Controller
     public function viewJobs()
     {
         $jobs = Job::all(); // Fetch all jobs from the database
+        dd($jobs);
         return view('employeejobs', compact('jobs')); // Return the jobs view with jobs data
     }
 
