@@ -1,4 +1,4 @@
-<!-- resources/views/upload_company_policy.blade.php -->
+
 
 
 @if(session('success'))

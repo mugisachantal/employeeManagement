@@ -1,30 +1,11 @@
-<!--<form action="{{ route('apply.submit', ['vacancy' => $vacancyId]) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="form-group">
-        <label>Name:</label>
-        <input type="text" name="name" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Email:</label>
-        <input type="email" name="email" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Contact:</label>
-        <input type="text" name="contact" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Upload CV (PDF):</label>
-        <input type="file" name="cv" class="form-control-file" accept="application/pdf" required>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Submit Application</button>
-</form> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Job Application</title>
-  <!-- Tailwind CDN (for demo/quick use only; use Laravel Mix/PostCSS in production) -->
+ 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">

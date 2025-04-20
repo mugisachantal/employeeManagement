@@ -1,43 +1,11 @@
 
-<!--
-<form action="{{ route('job.store') }}" method="POST" class="p-4 border rounded shadow-sm bg-light" style="max-width: 600px; margin: auto;">
-    @csrf
-
-    <h4 class="mb-4 text-center">Post a Job</h4>
-
-    <div class="mb-3">
-        <label for="name" class="form-label">Name of Job</label>
-        <input type="text" name="name" id="name" class="form-control" required>
-    </div>
-
-    <div class="mb-3">
-        <label for="experience" class="form-label">Experience Needed</label>
-        <input type="text" name="experience" id="experience" class="form-control" required>
-    </div>
-
-    <div class="mb-3">
-        <label for="education" class="form-label">Education</label>
-        <input type="text" name="education" id="education" class="form-control" required>
-    </div>
-
-    <div class="d-grid">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-
-    @if(session('success'))
-        <div class="alert alert-success mt-3 text-center">
-            {{ session('success') }}
-        </div>
-    @endif
-</form>
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Post a Job</title>
-  <!-- Tailwind CDN (for quick use) -->
+  
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">

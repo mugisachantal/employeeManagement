@@ -1,135 +1,189 @@
-
-
-
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
+  <meta charset="UTF-8">
+  <title>Employee Dashboard</title>
 
-    <!-- Bootstrap & FontAwesome -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <!-- Optimized loading for Bootstrap CSS -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></noscript>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            width: 220px;
-            background-color: #343a40;
-            padding-top: 30px;
-        }
-        .sidebar .nav-link {
-            color: #ffffff;
-            padding: 10px 20px;
-        }
-        .sidebar .nav-link:hover {
-            background-color: #495057;
-        }
-        .sidebar h4 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .content {
-            margin-left: 220px;
-            padding: 30px;
-        }
-        .navbar {
-            margin-left: 220px;
-        }
-        .modal-header {
-            background-color: #007bff;
-            color: #fff;
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-            .navbar, .content {
-                margin-left: 0;
-            }
-        }
-    </style>
+  <!-- Optimized loading for Font Awesome -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></noscript>
+
+  <style>
+    body {
+      background-color: #f4f4f4;
+      padding-top: 1px;
+    }
+
+    .top-nav {
+      background-color: #343a40;
+      padding: 10px 20px;
+      color: white;
+    }
+
+    .top-nav .nav-link {
+      color: white;
+    }
+
+    .sidebar {
+      height: 100vh;
+      background-color: #007bff;
+      color: white;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover {
+      background-color: #0056b3;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .announcement-box {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-left: 5px solid #007bff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .section {
+      display: none;
+    }
+  </style>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+      showSection('announcements');
+    });
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
+      });
+      const target = document.getElementById(id);
+      if (target) {
+        target.style.display = 'block';
+      }
+    }
+  </script>
 </head>
+
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column">
-        <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
-        <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" data-bs-toggle="dropdown">
-                <i class="fas fa-briefcase me-2"></i>Jobs
-            </a>
-            
-        </div>
-        <a class="nav-link" href="#"><i class="fas fa-id-card me-2"></i>View Details</a>
-        <a class="nav-link" href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
-        <a class="nav-link" href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
+  <!-- Top Navbar -->
+  <div class="top-nav d-flex justify-content-between align-items-center">
+    <span class="fs-5"><i class="fas fa-user-circle me-2"></i>Employee</span>
+    <div>
+      <a class="nav-link d-inline me-3" href="#"><i class="fas fa-user me-1"></i>Profile</a>
+      <a class="nav-link d-inline" href="#"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
     </div>
+  </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Employee System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user me-1"></i>Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
-                    </li>
-                </ul>
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <nav class="col-md-2 sidebar">
+        <a onclick="showSection('home')"><i class="fas fa-home me-2"></i>Home</a>
+        <a onclick="showSection('details')"><i class="fas fa-id-card me-2"></i>View Details</a>
+        <a href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
+        <a href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="col-md-10 py-4">
+        <div class="container">
+
+          <!-- Home -->
+          <div id="home" class="section">
+            <div class="text-center mb-4">
+              <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
+              <h4 class="mt-2">Welcome to Your Dashboard</h4>
+              <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
             </div>
-        </div>
-    </nav>
+          </div>
 
-    <!-- Content -->
-    <div class="content">
-        <h2>Welcome to Your Dashboard</h2>
-        <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
-    </div>
-
-    <!-- Upload CV Modal -->
-    <div class="modal fade" id="uploadCvModal" tabindex="-1" aria-labelledby="uploadCvModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Upload Your CV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('employee.upload.cv') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="cv" class="form-label">Choose PDF File</label>
-                            <input type="file" name="cv" id="cv" class="form-control" accept="application/pdf" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description (Optional)</label>
-                            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Upload CV</button>
-                    </form>
-                </div>
+          <!-- Profile Section -->
+          <div id="details" class="section">
+            <div class="card">
+              <div class="card-header">Profile</div>
+              <div class="card-body text-center">
+                <img src="https://via.placeholder.com/100" class="profile-pic mb-3">
+                <form method="POST" action="update_email.php">
+                  <div class="mb-3 text-start">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Edit your Email</button>
+                </form>
+              </div>
             </div>
-        </div>
-    </div>
+          </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+          <!-- Announcements Section -->
+          <div id="announcements" class="section">
+            <div class="announcement-box">
+              <h5>Announcements</h5>
+              <ul>
+                <li>Team meeting scheduled for Friday at 10 AM.</li>
+                <li>Annual leave application deadline is end of this month.</li>
+              </ul>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="dashboard-card">
+                  <h6>Leave Request</h6>
+                  <p><a onclick="showSection('leave')" class="btn btn-sm btn-primary">View Requests</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leave Request Section -->
+          <div id="leave" class="section">
+            <div class="card">
+              <div class="card-header">Leave Request</div>
+              <div class="card-body">
+                <form method="POST" action="submit_leave_request.php">
+                  <div class="mb-3">
+                    <label for="leave_request" class="form-label">Leave Request Letter</label>
+                    <textarea class="form-control" id="leave_request" name="leave_request" rows="4"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit Request</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
 </body>
 </html>
