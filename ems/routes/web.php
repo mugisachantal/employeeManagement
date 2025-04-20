@@ -76,4 +76,11 @@ Route::get('/test-email', function () {
     Mail::to('recipient@example.com')->send(new CVUploaded($cvPath));
     return 'Email sent!';
 });
+// routes/web.php
 
+use App\Http\Controllers\LeaveRequestController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/leave-request', [LeaveRequestController::class, 'create'])->name('leave_requests.create');
+    Route::post('/leave-request', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
+});
