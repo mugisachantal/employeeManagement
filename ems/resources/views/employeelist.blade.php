@@ -171,7 +171,7 @@
                                             @if($T==1)
                                                 <td class="text-center">
                                                     <a href="{{ route('editing', $value)}}" class="btn btn-primary btn-sm edit-btn">
-                                                        <i class="bi bi-pencil-square me-1"></i> Edit
+                                                        <i class="bi bi-pencil-square me-1"></i> change
                                                     </a>
                                                 </td>                       
                                             @endif

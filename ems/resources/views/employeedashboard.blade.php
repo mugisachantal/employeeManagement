@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -47,6 +44,27 @@
             background-color: #007bff;
             color: #fff;
         }
+        .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px auto;
+        }
+        .profile-img-container img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        .no-profile-placeholder {
+            background-color: #e9ecef;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+        }
         @media (max-width: 768px) {
             .sidebar {
                 position: relative;
@@ -61,47 +79,65 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column">
-        <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
-        <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
-        
-        <a class="nav-link" href="#"><i class="fas fa-id-card me-2"></i>View Details</a>
-        <a class="nav-link" href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
-        <a class="nav-link" href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
-    </div>
+<!-- Sidebar -->
+<div class="sidebar d-flex flex-column">
+    <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
+    <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
+    <a class="nav-link" href="#"><i class="fas fa-id-card me-2"></i>View Details</a>
+    <a class="nav-link" href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
+    <a class="nav-link" href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
+    <a class="nav-link" href="{{ route('update.profile', $employee->id) }}"><i class="fas fa-user-edit me-2"></i>Update Profile</a>
+</div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Employee System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user me-1"></i>Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
-                    </li>
-                </ul>
-            </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Employee System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user me-1"></i>Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                </li>
+            </ul>
         </div>
-    </nav>
-
-    <!-- Content -->
-    <div class="content">
-        <h2>Welcome to Your Dashboard</h2>
-        <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
     </div>
+</nav>
 
-   
-    
+<!-- Content -->
+<div class="content">
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <h2>Welcome {{ $employee->name }}</h2>
+    <div class="text-center">
+        <div class="profile-img-container">
+            @if ($employee->profile_picture)
+                <img src="{{ asset('storage/' . $employee->profile_picture) }}"
+                     alt="Profile Picture"
+                     class="img-fluid rounded-circle border border-primary shadow">
+            @else
+                <div class="no-profile-placeholder rounded-circle border border-primary shadow">
+                    No Profile Picture
+                </div>
+            @endif
+        </div>
+    </div>
+    <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
 </body>
 </html>
