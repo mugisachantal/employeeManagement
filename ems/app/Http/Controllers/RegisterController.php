@@ -107,7 +107,7 @@ class RegisterController extends Controller
     public function profileRetrival($id)
     {   $flag= 1;
         $user = Employee::findOrFail($id,);
-        return view('employee', compact('employee','flag')); 
+        return view('employee', compact('user','flag','id')); 
     }
     // public function adminProfileRetrival($aflag)
     // {   $flag= 0;
@@ -117,7 +117,9 @@ class RegisterController extends Controller
 
    
     public function update(Request $request, $id,$flag)
-    {    if($flag==1|| $flag==0){
+    {   
+        
+        if($flag==1|| $flag==0){
         $employee = Auth::guard('employee')->user();
         $employee = Employee::findOrFail($id);
     }else{

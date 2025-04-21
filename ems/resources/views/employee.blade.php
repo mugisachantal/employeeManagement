@@ -335,8 +335,9 @@
             <i class="bi bi-pencil-square me-2"></i>Update profle
         </button>
         @endif
+ </div>
 
-    </div>
+
 @if(!$id==-1)   
     <div class="container">
             <!--update Form -->
@@ -348,7 +349,7 @@
                         <form method="POST" action="{{ route('update',['id'=>$user->id,'flag'=>1])}}" id="registerForm" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-4">
-                                <label for="profile_picture" class="form-label fw-bold mb-3">Profile Picture</label>
+                                <label for="profile_picture" class="form-label fw-bold mb-3">Admin Profile Picture</label>
                                 <div class="profile-picture-container">
                                     <div class="profile-picture-preview" id="profilePreview">
                                         <i class="bi bi-person"></i>
@@ -408,6 +409,8 @@
     </div>
     
 @else
+
+
 <div class="container">
     <!--update Form -->
     <div class="row justify-content-center registration-form" id="registrationForm">
@@ -418,7 +421,7 @@
                     <form method="POST" action="{{ route('Admin.profile.update')}}" id="registerForm" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label for="profile_picture" class="form-label fw-bold mb-3">Profile Picture</label>
+                            <label for="profile_picture" class="form-label fw-bold mb-3">employee Profile Picture</label>
                             <div class="profile-picture-container">
                                 <div class="profile-picture-preview" id="profilePreview">
                                     <i class="bi bi-person"></i>

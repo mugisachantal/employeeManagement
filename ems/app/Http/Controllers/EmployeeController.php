@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\confirmation_lists;
+use App\Models\Announcement;
+use App\Models\CompanyPolicy;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\Job;
@@ -27,27 +29,17 @@ class EmployeeController extends Controller
         return view('employeedashboard',compact('employee','confirm')); // Return the employee dashboard view
     }
 
-    // View available jobs
-    public function viewJobs()
+    public function viewAnnouncements()
     {
-        $jobs = Job::all(); // Fetch all jobs from the database
-        dd($jobs);
-        return view('employeejobs', compact('jobs')); // Return the jobs view with jobs data
+        // Fetch all announcements from the database
+        $announcements = Announcement::all();
+        return view('announcements', compact('announcements'));
     }
 
-    // Handle CV upload
-    public function uploadCV(Request $request)
+    public function viewCompanyPolicies()
     {
-        $request->validate([
-            'cv' => 'required|mimes:pdf|max:5120', // Validate the CV file
-        ]);
-
-        // Store the CV
-        $path = $request->file('cv')->store('cvs', 'public');
-
-        // Send CV to admin via email
-        Mail::to('omallaroy02@gmail.com')->send(new CVUploaded($path));
-
-        return back()->with('success', 'CV uploaded successfully!'); // Redirect back with success message
+        // Fetch all company policies from the database
+        $policies = CompanyPolicy::all();
+        return view('company_policies', compact('policies'));
     }
 }
