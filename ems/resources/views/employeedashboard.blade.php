@@ -170,8 +170,7 @@
         <h2>Welcome to Your Dashboard</h2>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
     </div>
-    <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
-</div>
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
