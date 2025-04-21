@@ -111,7 +111,7 @@
     <h1 class="hero-title">MotorVitaGlobal Company</h1>
     <p>A car company that speaks Volumes, we ride on legacy!!!!</p>
     <p>Get behind the wheel of your dream ride! A collection of affordable cars that fit your budget and exceed your expectations!</p>
-    <button class="btn btn-apply mt-3" data-bs-toggle="modal" data-bs-target="#advertisementModal">🔔 View Announcements</button>
+    <button class="btn btn-apply mt-3" data-bs-toggle="modal" data-bs-target="#advertisementModal">🔔 View Job Adverts</button>
   </section>
 
   <!-- ABOUT US CARDS SECTION -->
