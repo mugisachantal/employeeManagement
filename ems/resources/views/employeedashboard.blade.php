@@ -3,7 +3,11 @@
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
@@ -11,7 +15,77 @@
     <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 220px;
+            background-color: #343a40;
+            padding-top: 30px;
+        }
+        .sidebar .nav-link {
+            color: #ffffff;
+            padding: 10px 20px;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+        .sidebar h4 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 30px;
+        }
+        .navbar {
+            margin-left: 220px;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .profile-img-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px auto;
+        }
+        .profile-img-container img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        .no-profile-placeholder {
+            background-color: #e9ecef;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            .navbar, .content {
+                margin-left: 0;
+            }
+        }
+    </style>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -96,6 +170,13 @@
         <h2>Welcome to Your Dashboard</h2>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
     </div>
+    <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
 
    
     
