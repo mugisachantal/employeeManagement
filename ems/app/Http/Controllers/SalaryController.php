@@ -19,7 +19,7 @@ class SalaryController extends Controller
         $status=$SMonthStatus->status;
         if($status==0)
         {
-                  if(Carbon::now()->day ===20 )
+                  if(Carbon::now()->day ===22 )
                     {
 
 
@@ -43,17 +43,20 @@ class SalaryController extends Controller
         }
     return view('index');
     }
-    public function paymentConfirmation(Request $request, $employeeId)
+    public function paymentConfirmation(Request $request, $email)
 {
+
+   
     if( $request instanceof Request){
-        $employee = Employee::findOrFail($employeeId); // Find the employee by ID
+        $employee = Employee::where('email', $email)->first(); // Find the employee by ID
+        
         UnpaidEmployee::where('email', $employee->email)->delete();
         confirmation_lists::create([
             'name' => $employee->name,
             'email' => $employee->email,
             'salary' => $employee->salary,
         ]);
-
+        return redirect()->back()->with('success', 'Payment claim sent successufyly to '.$employee->name);
     }
 }    public function paymentConfirmed(Request $request, $id)
     { 
@@ -86,7 +89,7 @@ class SalaryController extends Controller
              }
              
         }
-        return redirect()->route('employee.dashboard',['employee'=> $employee ]);
+        return redirect()->back()->with('success', 'Thank you for your feedback');
      
        
     }

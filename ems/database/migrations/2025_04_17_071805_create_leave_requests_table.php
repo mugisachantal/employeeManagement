@@ -14,7 +14,7 @@ return new class extends Migration
      {
          Schema::create('leave_requests', function (Blueprint $table) {
              $table->id();
-             $table->foreignId('employee_id')->constrained('users'); // Assuming 'users' table holds employees
+             $table->integer('employee_id'); // Assuming 'users' table holds employees
              $table->date('start_date');
              $table->date('end_date');
              $table->text('reason');

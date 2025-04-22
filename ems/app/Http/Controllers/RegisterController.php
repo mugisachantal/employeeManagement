@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\UnpaidEmployee;
 use App\Models\paid_employee;
+use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -66,14 +67,18 @@ class RegisterController extends Controller
               
             } catch (\Exception $e) {
                 \Log::error('Error sending welcome email: ' . $e->getMessage());
-                return response()->json(['message' => 'Employee registered successfully, but there was an issue sending the welcome email. Please notify the administrator.'], 500);
+                 
+        $Hr = Auth::guard('admin')->user();
+        
+        return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success','Employee registered successfully, but there was an issue sending the welcome email. Please notify the administrator'.  $generatedPassword);
+                
             }
         } else {
             return response()->json(['error' => 'Unauthorized action.'], 401);
         }
 
     
-    }
+    } 
 
     public function showEmployeeList($T)
     {
@@ -88,8 +93,9 @@ class RegisterController extends Controller
             $employees = Employee::all();
             $UnPaidEmployees = UnpaidEmployee::all();
             $paidemployees = paid_employee::all();
+            $leaverequests = LeaveRequest::all();
 
-        return view('hrdashboard', compact('employees','UnPaidEmployees','Hr','paidemployees'));
+        return view('hrdashboard', compact('employees','UnPaidEmployees','Hr','paidemployees','leaverequests'));
     }
 
     public function edit($id)
@@ -132,7 +138,7 @@ class RegisterController extends Controller
                     'email' => 'nullable|string|email|max:255|unique:employees,email,' . $id,
                     'date_of_birth' => 'nullable|date',
                     'sex' => 'nullable|string|in:m,M,f,F,o,O',
-                    'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:49048',
+                    'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:49048',
                      'password' => 'nullable|string|min:3|confirmed', // 'confirmed' requires a 'password_confirmation' field
                     'salary' => 'nullable|numeric|min:0',
                     'department_name' => 'nullable|string|max:255',
@@ -174,8 +180,6 @@ class RegisterController extends Controller
             
                 $employee->profile_picture = $path;  
             
-        }else{
-            return redirect()->route('employee.dashboard',['employee'=> $employee])->with('success',$employee->name.'failed to upload profile picture');
         }
 
         if ($request->filled('password')) {
@@ -191,6 +195,7 @@ class RegisterController extends Controller
         }
 
         $employee->save();
+        
         if($flag==0){
         $Hr = Auth::guard('admin')->user();
         
@@ -255,8 +260,6 @@ class RegisterController extends Controller
             
             $administrator->profile_picture = $path;  
             
-        }else{
-            return redirect()->route('hrdashboard',['employee'=> $administrator])->with('success',$administrator->name.'failed to upload profile picture');
         }
 
         if ($request->filled('password')) {
@@ -272,7 +275,7 @@ class RegisterController extends Controller
         }
 
         $administrator->save();
-       
+        
         $Hr = Auth::guard('admin')->user();
         
         return redirect()->route('hrdashboard',['Hr' => $Hr])->with('success','Your record has been updated successfully');

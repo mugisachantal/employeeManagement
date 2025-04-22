@@ -1,7 +1,16 @@
-<!-- resources/views/leave_requests/create.blade.php -->
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- resources/views/leave_requests/create.blade.php -->
 
-@section('content')
 <div class="max-w-xl mx-auto mt-10 bg-white shadow p-6 rounded">
     <h2 class="text-2xl font-bold mb-4">Apply for Leave</h2>
 
@@ -11,7 +20,7 @@
         </div>
     @endif
 
-    <form action="{{ route('leave_requests.store') }}" method="POST">
+    <form action="{{ route('leave_requests.create') }}" method="POST">
         @csrf
 
         <div class="mb-4">
@@ -32,6 +41,8 @@
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit Request</button>
     </form>
 </div>
-@endsection
 
 
+
+</body>
+</html>

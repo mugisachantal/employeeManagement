@@ -275,11 +275,16 @@
                         <h5><i class="bi bi-envelope-fill me-2"></i> Leave Requests</h5>
                         <div class="dropdown-container">
                             <div class="card-dropdown-toggle" onclick="toggleDropdown(this)">
-                                View Requests <span class="badge bg-primary rounded-pill ms-2">{{ count($employees ?? []) }}</span>
+                                View Requests <span class="badge bg-primary rounded-pill ms-2">{{ count($leaverequests ?? []) }}</span>
                             </div>
                             <ul class="dropdown-menu" data-parent=".dashboard-card">
                                 @forelse ($employees as $employee)
-                                    <li><a class="dropdown-item" href="#">{{ $employee->name }}</a></li>
+                                @foreach ($leaverequests as $leaverequest)
+                                @if($employee->id==$leaverequest->employee_id )
+                                    <li><a class="dropdown-item" href="{{route('leave.request.handling',['leaverequest'=>$leaverequest])}}">Request By:{{ $employee->name }}</a></li>
+                                    @break
+                                    @endif
+                                    @endforeach
                                 @empty
                                     <li><span class="dropdown-item">No pending requests</span></li>
                                 @endforelse

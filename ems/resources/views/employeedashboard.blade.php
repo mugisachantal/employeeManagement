@@ -118,7 +118,7 @@
 <div class="sidebar d-flex flex-column">
     <h4><i class="fas fa-user-circle me-2"></i>Employee</h4>
     <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Home</a>
-    <a class="nav-link" href="#"><i class="fas fa-id-card me-2"></i>Request Leave</a>
+    <a class="nav-link" href="{{route('leave_requests.create')}}"><i class="fas fa-id-card me-2"></i>Request Leave</a>
     <a class="nav-link" href="{{ route('employee.announcements') }}"><i class="fas fa-bullhorn me-2"></i>Announcements</a>
     <a class="nav-link" href="{{ route('employee.company-policies') }}"><i class="fas fa-file-alt me-2"></i>Company Policies</a>
     <a class="nav-link" href="{{ route('update.profile', $employee->id) }}"><i class="fas fa-user-edit me-2"></i>Update Profile</a>
@@ -166,12 +166,33 @@
                     </div>
                 @endif
             </div>
+{{-- form for acknowlegemente --}}
+@if ($request_available==1)
+
+
+            <div class="card-container">
+                <div id="acknowledgementCard" class="card shadow p-3 mb-5 bg-white rounded" style="width: 300px;">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <p class="leave-status-text">
+                            Leave Request status: <span id="leaveStatus">{{ $request_status }}</span>
+                        </p>
+                        @if($AKrequired==1)
+                        <form action="{{route('acknowledge')}}" method="POST">
+                            @csrf
+                        <input type="hidden" name="acknowledged" value="yes">
+                        <button type="submit" id="acknowledgeButton" class="btn btn-primary">Acknowledge</button>
+                        </form>
+                      @endif
+                    </div>
+                </div>
+            </div>
+@endif
         </div>
         <p class="text-muted">Use the navigation menu on the left to access your tools and options.</p>
   @if($confirm==1)
         <div class="confirmation-container">
-            <h3 class="confirmation-title">Confirm Action</h3>
-            <p class="confirmation-message">Please confirm or reject the following action.</p>
+            <h3 class="confirmation-title">Confirm Payement </h3>
+            <p class="confirmation-message">Please confirm only if you indeed received the payement or reject if ypu didnt receive payement. Actions will be taken accordingly </p>
             <form action="{{route('payment.confirmed',$employee->id)}}" method="POST">
                 @csrf
                 <div class="form-group">

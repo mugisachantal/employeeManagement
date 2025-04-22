@@ -13,6 +13,8 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Mail\CVUploaded; 
 use Illuminate\Support\Facades\Mail; 
+Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
+
 
 // Admin protected routes
 Route::middleware(['auth:admin'])->group(function () {
@@ -36,7 +38,7 @@ Route::get('/employee/company-policies', [EmployeeController::class, 'viewCompan
 
 
 //salary  tracking and management route 
-  Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
+  
   Route::post('/paymentconfirmation/{email}', [SalaryController::class, 'paymentConfirmation'])->name('payment.confirmation')->middleware('auth:admin');
   Route::post('/paymentconfirmed/{id}', [SalaryController::class, 'paymentConfirmed'])->name('payment.confirmed')->middleware('auth:employee');
   // Job posting routes
@@ -164,4 +166,7 @@ Route::get('/admin/dashboard', [ApplicationController::class, 'index'])->name('a
 // });
 
 Route::get('/leave-request', [LeaveRequestController::class, 'create'])->name('leave_requests.create');
-    Route::post('/leave-request', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
+Route::post('/leave-request', [LeaveRequestController::class, 'store']);
+Route::get('/leave-request/handling/{leaverequest}', [LeaveRequestController::class, 'handleLeaveRequest'])->name('leave.request.handling');
+Route::post('/leave-request/handling/{id}', [LeaveRequestController::class, 'captureFeedback']);
+Route::post('/acknowledgement', [LeaveRequestController::class, 'acknowledge'])->name('acknowledge');

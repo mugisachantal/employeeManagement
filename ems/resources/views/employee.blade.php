@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         :root {
             --primary-blue: #0d6efd;
             --dark-blue: #0b5ed7;
             --light-blue: #e7f1ff;
         }
-        
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .card {
             border: none;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -24,7 +25,7 @@
             margin-top: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .card-header {
             background-color: var(--primary-blue);
             color: white;
@@ -33,60 +34,60 @@
             padding: 1rem 1.5rem;
             font-size: 1.25rem;
         }
-        
+
         .card-body {
             padding: 2rem;
         }
-        
+
         .btn-primary {
             background-color: var(--primary-blue);
             border-color: var(--primary-blue);
             padding: 0.5rem 1.5rem;
             font-weight: 500;
         }
-        
+
         .btn-primary:hover {
             background-color: var(--dark-blue);
             border-color: var(--dark-blue);
         }
-        
+
         .btn-secondary {
             padding: 0.5rem 1.5rem;
             font-weight: 500;
         }
-        
+
         .btn-outline-danger {
             padding: 0.5rem 1.5rem;
             font-weight: 500;
         }
-        
+
         .form-control:focus {
             border-color: var(--primary-blue);
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
-        
+
         label {
             font-weight: 500;
         }
-        
+
         .registration-form {
             display: none;
         }
-        
+
         .show-form-btn {
             display: block;
             margin: 2rem auto;
             padding: 0.75rem 2rem;
             font-size: 1.1rem;
         }
-        
+
         .btn-container {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-top: 1.5rem;
         }
-        
+
         .profile-picture-container {
             background-color: var(--light-blue);
             border-radius: 0.5rem;
@@ -94,7 +95,7 @@
             border: 2px dashed var(--primary-blue);
             position: relative;
         }
-        
+
         .profile-picture-preview {
             width: 100px;
             height: 100px;
@@ -106,18 +107,18 @@
             justify-content: center;
             overflow: hidden;
         }
-        
+
         .profile-picture-preview i {
             font-size: 3rem;
             color: #adb5bd;
         }
-        
+
         .profile-picture-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .custom-file-button {
             position: relative;
             overflow: hidden;
@@ -125,7 +126,7 @@
             width: 100%;
             text-align: center;
         }
-        
+
         .custom-file-button input[type=file] {
             position: absolute;
             left: 0;
@@ -155,13 +156,13 @@
             height: 150px;
             margin: 0 auto 30px auto;
         }
-        
+
         .profile-img-container img {
             object-fit: cover;
             width: 100%;
             height: 100%;
         }
-        
+
         .no-profile-placeholder {
             background-color: #e9ecef;
             width: 100%;
@@ -178,12 +179,11 @@
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">@if($flag==0){{$user->name}}'s @else Your @endif current Details</h2>
-          <!-- Profile Picture using Bootstrap classes -->
           <div class="text-center">
             <div class="profile-img-container">
                 @if ($user->profile_picture)
-                    <img src="{{ asset('storage/' . $user->profile_picture) }}" 
-                         alt="Profile Picture" 
+                    <img src="{{ asset('storage/' . $user->profile_picture) }}"
+                         alt="Profile Picture"
                          class="img-fluid rounded-circle border border-primary shadow">
                 @else
                     <div class="no-profile-placeholder rounded-circle border border-primary shadow">
@@ -219,24 +219,28 @@
             </tbody>
         </table>
     </div>
-@if($flag==0)
+
     <div class="container">
-        <h2 class="mb-4">EDIT {{$user->name}}'s  Details</h2>
-        <div class="row justify-content-center">
+        <button class="btn btn-primary btn-lg show-form-btn" id="showFormBtn">
+            <i class="bi bi-pencil-square me-2"></i>Update Profile
+        </button>
+
+        @if($flag==0)
+        <div class="row justify-content-center registration-form" id="employeeUpdateForm">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Only fill in the fields you would like to make changes to') }}</div>
-    
+                    <div class="card-header">{{ __('Edit Employee Details') }}</div>
+
                     <div class="card-body">
                         <form method="POST" action="{{ route('update',['id'=>$user->id,'flag'=>0]) }}">
                             @csrf
-    
+
                             <div class="mb-3 row">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-    
+
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus>
-    
+
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -244,13 +248,13 @@
                                     @enderror
                                 </div>
                             </div>
-    
+
                             <div class="mb-3 row">
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-    
+
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">
-    
+
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -258,15 +262,15 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Salary') }}</label>
-    
+                                <label for="salary" class="col-md-4 col-form-label text-md-end">{{ __('Salary') }}</label>
+
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="salary" value="{{ old('salary') }}"  autocomplete="" autofocus>
-    
-                                    @error('name')
+                                    <input id="salary" type="text" class="form-control @error('salary') is-invalid @enderror" name="salary" value="{{ old('salary') }}"  autocomplete="" autofocus>
+
+                                    @error('salary')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -274,11 +278,11 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Date of birth') }}</label>
-    
+                                <label for="date_of_birth" class="col-md-4 col-form-label text-md-end">{{ __('Date of birth') }}</label>
+
                                 <div class="col-md-6">
-                                    <input id="name" type="date" class="form-control @error('name') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}"  autocomplete="name" autofocus>
-    
+                                    <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}"  autocomplete="date_of_birth" autofocus>
+
                                     @error('date_of_birth')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -286,14 +290,14 @@
                                     @enderror
                                 </div>
                             </div>
-    
+
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Sex') }}</label>
-    
+                                <label for="sex" class="col-md-4 col-form-label text-md-end">{{ __('Sex') }}</label>
+
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('sex') is-invalid @enderror" name="sex" value="{{ old('sex') }}"  autocomplete="M" autofocus>
-    
+                                    <input id="sex" type="text" class="form-control @error('sex') is-invalid @enderror" name="sex" value="{{ old('sex') }}"  autocomplete="sex" autofocus>
+
                                     @error('sex')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -301,16 +305,16 @@
                                     @enderror
                                 </div>
                             </div>
-    
-    
+
+
 
                             <div class="mb-3 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
-    
+                                <label for="department" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
+
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="department" value="{{ old('department') }}"  autocomplete="name" autofocus>
-    
-                                    @error('date_of_birth')
+                                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}"  autocomplete="department" autofocus>
+
+                                    @error('department')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -322,6 +326,9 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Save changes') }}
                                     </button>
+                                    <button type="button" class="btn btn-outline-danger cancel-form-btn">
+                                        {{ __('Cancel') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -329,75 +336,80 @@
                 </div>
             </div>
         </div>
-        @else
-        <!-- Show form button -->
-        <button class="btn btn-primary btn-lg show-form-btn" id="showFormBtn">
-            <i class="bi bi-pencil-square me-2"></i>Update profle
-        </button>
         @endif
- </div>
 
-
-@if(!$id==-1)   
-    <div class="container">
-            <!--update Form -->
-        <div class="row justify-content-center registration-form" id="registrationForm">
+        @if($id != -1)
+        <div class="row justify-content-center registration-form" id="userProfileUpdateForm">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
+                    <div class="card-header">{{ __('Update Your Profile') }}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('update',['id'=>$user->id,'flag'=>1])}}" id="registerForm" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('update',['id'=>$user->id,'flag'=>1])}}" id="userRegisterForm" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-4">
-                                <label for="profile_picture" class="form-label fw-bold mb-3">Admin Profile Picture</label>
+                                <label for="profile_picture" class="form-label fw-bold mb-3">Your Profile Picture</label>
                                 <div class="profile-picture-container">
-                                    <div class="profile-picture-preview" id="profilePreview">
-                                        <i class="bi bi-person"></i>
+                                    <div class="profile-picture-preview" id="userProfilePreview">
+                                        @if ($user->profile_picture)
+                                            <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                                        @else
+                                            <i class="bi bi-person"></i>
+                                        @endif
                                     </div>
                                     <div class="text-center mb-3">
-                                        <span class="text-muted small">Upload your profile picture</span>
+                                        <span class="text-muted small">Upload a new profile picture</span>
                                     </div>
                                     <div class="custom-file-button">
                                         <button type="button" class="btn btn-outline-primary">
                                             <i class="bi bi-upload me-2"></i>Choose File
                                         </button>
-                                        <input id="profile_picture"class="form-control"  type="file" name="profile_picture" accept="image/*">
+                                        <input id="user_profile_picture"class="form-control"  type="file" name="profile_picture" accept="image/*">
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input id="email" type="email" class="form-control" name="email"  autocomplete="email">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" autocomplete="email">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">New Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input id="password" type="password" class="form-control" name="password"  autocomplete="new-password">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="mb-4">
-                                <label for="password-confirm" class="form-label">Confirm Password</label>
+                                <label for="password-confirm" class="form-label">Confirm New Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                                 </div>
                             </div>
-                            
+
                             <div class="btn-container">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check2-circle me-2"></i>Save Changes
                                 </button>
-                                <button type="reset" class="btn btn-secondary" id="clearFormBtn">
+                                <button type="reset" class="btn btn-secondary clear-form-btn">
                                     <i class="bi bi-eraser me-2"></i>Clear Form
                                 </button>
-                                <button type="button" class="btn btn-outline-danger" id="cancelFormBtn">
+                                <button type="button" class="btn btn-outline-danger cancel-form-btn">
                                     <i class="bi bi-x-circle me-2"></i>Cancel
                                 </button>
                             </div>
@@ -406,220 +418,248 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-@else
+        @endif
 
-
-<div class="container">
-    <!--update Form -->
-    <div class="row justify-content-center registration-form" id="registrationForm">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('Admin.profile.update')}}" id="registerForm" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="profile_picture" class="form-label fw-bold mb-3">employee Profile Picture</label>
-                            <div class="profile-picture-container">
-                                <div class="profile-picture-preview" id="profilePreview">
-                                    <i class="bi bi-person"></i>
+        @if($id == -1)
+        <div class="row justify-content-center registration-form" id="adminProfileUpdateForm">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Update Admin Profile') }}</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('Admin.profile.update')}}" id="adminRegisterForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="profile_picture" class="form-label fw-bold mb-3">Admin Profile Picture</label>
+                                <div class="profile-picture-container">
+                                    <div class="profile-picture-preview" id="adminProfilePreview">
+                                        @if ($user->profile_picture)
+                                            <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                                        @else
+                                            <i class="bi bi-person"></i>
+                                        @endif
+                                    </div>
+                                    <div class="text-center mb-3">
+                                        <span class="text-muted small">Upload a new profile picture</span>
+                                    </div>
+                                    <div class="custom-file-button">
+                                        <button type="button" class="btn btn-outline-primary">
+                                            <i class="bi bi-upload me-2"></i>Choose File
+                                        </button>
+                                        <input id="admin_profile_picture" class="form-control" type="file" name="profile_picture" accept="image/*">
+                                    </div>
                                 </div>
-                                <div class="text-center mb-3">
-                                    <span class="text-muted small">Upload your profile picture</span>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" autocomplete="name">
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                <div class="custom-file-button">
-                                    <button type="button" class="btn btn-outline-primary">
-                                        <i class="bi bi-upload me-2"></i>Choose File
-                                    </button>
-                                    <input id="profile_picture" class="form-control" type="file" name="profile_picture" accept="image/*">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="" autocomplete="email">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Name field -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-3">
+                                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                    <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="">
+                                    @error('date_of_birth')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Date of Birth field -->
-                        <div class="mb-3">
-                            <label for="date_of_birth" class="form-label">Date of Birth</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}">
-                                @error('date_of_birth')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-3">
+                                <label for="sex" class="form-label">Sex</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
+                                    <select id="sex" class="form-control @error('sex') is-invalid @enderror" name="sex">
+                                        <option value="">Select</option>
+                                        <option value="m" {{ old('sex', strtolower($user->sex)) == 'm' ? 'selected' : '' }}>Male</option>
+                                        <option value="f" {{ old('sex', strtolower($user->sex)) == 'f' ? 'selected' : '' }}>Female</option>
+                                        <option value="o" {{ old('sex', strtolower($user->sex)) == 'o' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                    @error('sex')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Sex field -->
-                        <div class="mb-3">
-                            <label for="sex" class="form-label">Sex</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
-                                <select id="sex" class="form-control @error('sex') is-invalid @enderror" name="sex">
-                                    <option value="">Select</option>
-                                    <option value="M" {{ old('sex') == 'M' ? 'selected' : '' }}>Male</option>
-                                    <option value="F" {{ old('sex') == 'F' ? 'selected' : '' }}>Female</option>
-                                    <option value="O" {{ old('sex') == 'O' ? 'selected' : '' }}>Other</option>
-                                </select>
-                                @error('sex')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-3">
+                                <label for="salary" class="form-label">Salary</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                    <input id="salary" type="number" step="0.01" class="form-control @error('salary') is-invalid @enderror" name="salary" value="{{ old('salary', $user->salary) }}">
+                                    @error('salary')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Email field (already exists) -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-3">
+                                <label for="department_name" class="form-label">Department Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                    <input id="department_name" type="text" class="form-control @error('department_name') is-invalid @enderror" name="department_name" value="{{ old('department_name', $user->department_name) }}">
+                                    @error('department_name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Department field -->
-                        <div class="mb-3">
-                            <label for="department" class="form-label">Department</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-building"></i></span>
-                                <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}">
-                                @error('department')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-3">
+                                <label for="password" class="form-label">New Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Salary field -->
-                        <div class="mb-3">
-                            <label for="salary" class="form-label">Salary</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
-                                <input id="salary" type="number" step="0.01" class="form-control @error('salary') is-invalid @enderror" name="salary" value="{{ old('salary') }}">
-                                @error('salary')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="mb-4">
+                                <label for="password-confirm" class="form-label">Confirm New Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Password field (already exists) -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+        
+                            <div class="btn-container">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check2-circle me-2"></i>Save Changes
+                                </button>
+                                <button type="reset" class="btn btn-secondary clear-form-btn">
+                                    <i class="bi bi-eraser me-2"></i>Clear Form
+                                </button>
+                                <button type="button" class="btn btn-outline-danger cancel-form-btn">
+                                    <i class="bi bi-x-circle me-2"></i>Cancel
+                                </button>
                             </div>
-                        </div>
-                        
-                        <!-- Confirm Password field (already exists) -->
-                        <div class="mb-4">
-                            <label for="password-confirm" class="form-label">Confirm Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
-                            </div>
-                        </div>
-                        
-                        <div class="btn-container">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check2-circle me-2"></i>Save Changes
-                            </button>
-                            <button type="reset" class="btn btn-secondary" id="clearFormBtn">
-                                <i class="bi bi-eraser me-2"></i>Clear Form
-                            </button>
-                            <button type="button" class="btn btn-outline-danger" id="cancelFormBtn">
-                                <i class="bi bi-x-circle me-2"></i>Cancel
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
+            @endif
         </div>
-    </div>
-</div>
-@endif
-
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get elements
             const showFormBtn = document.getElementById('showFormBtn');
-            const registrationForm = document.getElementById('registrationForm');
-            const cancelFormBtn = document.getElementById('cancelFormBtn');
-            const clearFormBtn = document.getElementById('clearFormBtn');
-            const profilePictureInput = document.getElementById('profile_picture');
-            const profilePreview = document.getElementById('profilePreview');
-            const registerForm = document.getElementById('registerForm');
-            
-            // Show the form when the button is clicked
+            const employeeUpdateForm = document.getElementById('employeeUpdateForm');
+            const userProfileUpdateForm = document.getElementById('userProfileUpdateForm');
+            const adminProfileUpdateForm = document.getElementById('adminProfileUpdateForm');
+            const cancelFormBtns = document.querySelectorAll('.cancel-form-btn');
+            const clearFormBtns = document.querySelectorAll('.clear-form-btn');
+            const userProfilePictureInput = document.getElementById('user_profile_picture');
+            const adminProfilePictureInput = document.getElementById('admin_profile_picture');
+            const userProfilePreview = document.getElementById('userProfilePreview');
+            const adminProfilePreview = document.getElementById('adminProfilePreview');
+            const currentId = "{{ $id }}";
+            const flag = "{{ $flag }}";
+
+            // Initially hide all forms
+            if (employeeUpdateForm) employeeUpdateForm.style.display = 'none';
+            if (userProfileUpdateForm) userProfileUpdateForm.style.display = 'none';
+            if (adminProfileUpdateForm) adminProfileUpdateForm.style.display = 'none';
+
             showFormBtn.addEventListener('click', function() {
-                registrationForm.style.display = 'flex';
                 showFormBtn.style.display = 'none';
-            });
-            
-            // Hide the form when cancel button is clicked
-            cancelFormBtn.addEventListener('click', function() {
-                registrationForm.style.display = 'none';
-                showFormBtn.style.display = 'block';
-                registerForm.reset();
-                profilePreview.innerHTML = '<i class="bi bi-person"></i>';
-            });
-            
-            // Clear form functionality
-            clearFormBtn.addEventListener('click', function() {
-                profilePreview.innerHTML = '<i class="bi bi-person"></i>';
-            });
-            
-            // Preview profile picture when selected
-            profilePictureInput.addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        profilePreview.innerHTML = '';
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        profilePreview.appendChild(img);
-                    }
-                    
-                    reader.readAsDataURL(e.target.files[0]);
+                if (flag == 0 && employeeUpdateForm) {
+                    employeeUpdateForm.style.display = 'flex';
+                } else if (currentId != -1 && userProfileUpdateForm) {
+                    userProfileUpdateForm.style.display = 'flex';
+                } else if (currentId == -1 && adminProfileUpdateForm) {
+                    adminProfileUpdateForm.style.display = 'flex';
                 }
             });
+
+            cancelFormBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (employeeUpdateForm && employeeUpdateForm.style.display === 'flex') employeeUpdateForm.style.display = 'none';
+                    if (userProfileUpdateForm && userProfileUpdateForm.style.display === 'flex') userProfileUpdateForm.style.display = 'none';
+                    if (adminProfileUpdateForm && adminProfileUpdateForm.style.display === 'flex') adminProfileUpdateForm.style.display = 'none';
+                    showFormBtn.style.display = 'block';
+                });
+            });
+
+            clearFormBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const form = this.closest('form');
+                    if (form) {
+                        form.reset();
+                        const preview = form.querySelector('.profile-picture-preview');
+                        if (preview) {
+                            preview.innerHTML = '<i class="bi bi-person"></i>';
+                        }
+                    }
+                });
+            });
+
+            if (userProfilePictureInput && userProfilePreview) {
+                userProfilePictureInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            userProfilePreview.innerHTML = '';
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            userProfilePreview.appendChild(img);
+                        }
+                        reader.readAsDataURL(e.target.files[0]);
+                    } else if (userProfilePreview.querySelector('img')) {
+                        userProfilePreview.innerHTML = '<i class="bi bi-person"></i>';
+                    }
+                });
+            }
+
+            if (adminProfilePictureInput && adminProfilePreview) {
+                adminProfilePictureInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            adminProfilePreview.innerHTML = '';
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            adminProfilePreview.appendChild(img);
+                        }
+                        reader.readAsDataURL(e.target.files[0]);
+                    } else if (adminProfilePreview.querySelector('img')) {
+                        adminProfilePreview.innerHTML = '<i class="bi bi-person"></i>';
+                    }
+                });
+            }
         });
     </script>
-    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
