@@ -82,6 +82,90 @@
     .apply-form input, .apply-form textarea {
       margin-bottom: 10px;
     }
+    
+    /* Login Modal Styles */
+    .login-modal .modal-content {
+      background-color: #1a1a1a;
+      color: white;
+      border-radius: 10px;
+    }
+    
+    .login-modal .modal-header {
+      border-bottom: 1px solid #333;
+    }
+    
+    .login-modal .modal-footer {
+      border-top: 1px solid #333;
+    }
+    
+    .login-modal .form-control {
+      background-color: #333;
+      border: 1px solid #444;
+      color: white;
+    }
+    
+    .login-modal .form-control:focus {
+      background-color: #444;
+      color: white;
+      border-color: rgb(86, 86, 243);
+      box-shadow: 0 0 0 0.25rem rgba(86, 86, 243, 0.25);
+    }
+    
+    .btn-login {
+      background-color: rgb(86, 86, 243);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    
+    .btn-login:hover {
+      background-color: rgb(70, 70, 220);
+      color: white;
+    }
+    
+    .login-options {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .login-options a {
+      color: rgb(86, 86, 243);
+      text-decoration: none;
+    }
+    
+    .login-options a:hover {
+      text-decoration: underline;
+    }
+    
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-login button {
+      border: none;
+      background-color: transparent;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .social-login button:hover {
+      transform: scale(1.1);
+    }
+    
+    .facebook-color {
+      color: #3b5998;
+    }
+    
+    .google-color {
+      color: #db4437;
+    }
   </style>
 </head>
 <body>
@@ -96,13 +180,13 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-    </div>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-        <a class="nav-link" href="{{ route('login') }}">Login</a>
-      </ul>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -170,7 +254,73 @@
     </div>
   </div>
 
-  
+  <!-- LOGIN MODAL -->
+  <div class="modal fade login-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">
+            <i class="fas fa-user-circle me-2"></i>Login to your account
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ route('login') }}" method="POST" id="loginForm">
+            @csrf
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark text-light border-0">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark text-light border-0">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+                <button class="btn btn-dark border-0" type="button" id="togglePassword">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember" name="remember">
+              <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-login">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </button>
+            </div>
+            
+            <div class="login-options">
+              <a href="#">Forgot password?</a>
+              <p class="mt-3 mb-1">Don't have an account?</p>
+              <a href="{{ route('register') }}">Register now</a>
+            </div>
+            
+            <div class="text-center mt-3">
+              <p class="text-muted">- OR -</p>
+            </div>
+            
+            <div class="social-login">
+              <button type="button" class="facebook-color" aria-label="Login with Facebook">
+                <i class="fab fa-facebook-square"></i>
+              </button>
+              <button type="button" class="google-color" aria-label="Login with Google">
+                <i class="fab fa-google"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -183,25 +333,38 @@
       adModal.show();
 
       fetch('/api/jobs') // Adjust this to your actual API endpoint
-    .then(response => response.json())
-    .then(data => {
-        let jobList = '';
-        data.forEach(job => {
-            jobList += `
-              <div>
-                <strong>${job.name}</strong><br>
-                Experience: ${job.experience}<br>
-                Education: ${job.education}<br><br>
-                <a href="/apply/${job.id}" class="btn btn-apply mb-3">Apply</a>
-                <hr/>
-              </div>
-            `;
+      .then(response => response.json())
+      .then(data => {
+          let jobList = '';
+          data.forEach(job => {
+              jobList += `
+                <div>
+                  <strong>${job.name}</strong><br>
+                  Experience: ${job.experience}<br>
+                  Education: ${job.education}<br><br>
+                  <a href="/apply/${job.id}" class="btn btn-apply mb-3">Apply</a>
+                  <hr/>
+                </div>
+              `;
+          });
+          document.getElementById('job-list').innerHTML = jobList;
+      })
+      .catch(error => {
+          console.error('Error fetching job data:', error);
+      });
+      
+      // Password visibility toggle functionality
+      const togglePassword = document.getElementById('togglePassword');
+      const password = document.getElementById('password');
+      
+      if (togglePassword && password) {
+        togglePassword.addEventListener('click', function () {
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+          password.setAttribute('type', type);
+          this.querySelector('i').classList.toggle('fa-eye');
+          this.querySelector('i').classList.toggle('fa-eye-slash');
         });
-        document.getElementById('job-list').innerHTML = jobList;
-    })
-    .catch(error => {
-        console.error('Error fetching job data:', error);
-    });
+      }
     });
 
     function showApplyForm(jobId) {
@@ -210,7 +373,7 @@
       document.getElementById('job_id').value = jobId;
     }
 
-    document.getElementById('applicationForm').addEventListener('submit', function (e) {
+    document.getElementById('applicationForm') && document.getElementById('applicationForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const formData = new FormData(this);
@@ -231,4 +394,4 @@
   </script>
 
 </body>
-</html> 
+</html>

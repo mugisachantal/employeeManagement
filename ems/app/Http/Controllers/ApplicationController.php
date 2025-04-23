@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\Vacancy; 
@@ -41,7 +42,11 @@ class ApplicationController extends Controller
     public function viewApplications()
 {
     $applications = Application::with('vacancy')->latest()->get(); // eager load vacancy details if needed
-    return view('view_applications', compact('applications'));
+    $Hr = Auth::guard('admin')->user();
+   
+    return view('view_applications', compact('applications','Hr'));
+  
+   
 }
 
 //

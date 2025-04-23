@@ -10,6 +10,7 @@ use App\Models\HandledLeaveRequest;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\CVUploaded;
 
 
@@ -29,9 +30,11 @@ class EmployeeController extends Controller
              // No employee found with the email in $email
              $confirm=0;
          }
+
+         $AKrequired=0;
          if ($exists_in_leave_request||$exists_in_handled_leave_request) {
             $request_available=1;
-            $AKrequired=0;
+            
 
             if($exists_in_leave_request){
             $request_status=LeaveRequest::where('employee_id', $employee->id)->first()->status;
@@ -53,14 +56,17 @@ class EmployeeController extends Controller
     public function viewAnnouncements()
     {
         // Fetch all announcements from the database
+        $employee = Auth::guard('employee')->user();
+       
         $announcements = Announcement::all();
-        return view('announcements', compact('announcements'));
+        return view('announcements', compact('announcements','employee'));
     }
 
     public function viewCompanyPolicies()
     {
         // Fetch all company policies from the database
         $policies = CompanyPolicy::all();
-        return view('company_policies', compact('policies'));
+        $employee = Auth::guard('employee')->user();
+        return view('company_policies', compact('policies','employee'));
     }
 }

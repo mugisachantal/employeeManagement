@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Uploaded Company Policies</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-</head>
-<body>
+
+
+    @extends('components.layout')
+@section('content')
 <div class="container mt-5">
     <h2>Uploaded Company Policies</h2>
 
@@ -62,17 +58,5 @@
         </form>
     </div>
 </div>
+@endsection
 
-<script>
-    const modal = document.getElementById('confirmDeleteModal');
-    modal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const id = button.getAttribute('data-id');
-        const action = `/admin/company-policies/delete/${id}`;
-        const form = document.getElementById('deleteForm');
-        form.setAttribute('action', action);
-    });
-</script>
-
-</body>
-</html>

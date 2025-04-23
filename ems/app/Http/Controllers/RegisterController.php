@@ -22,7 +22,8 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('register'); // Assuming you have a register.blade.php view
+        $Hr = Auth::guard('admin')->user();
+        return view('register',compact('Hr')); // Assuming you have a register.blade.php view
     }
 
     public function register(Request $request)

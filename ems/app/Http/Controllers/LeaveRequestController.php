@@ -11,7 +11,9 @@ class LeaveRequestController extends Controller
 {
     public function create()
 {
-    return view('leave_requests.create'); 
+    
+    $employee = Auth::guard('employee')->user();
+    return view('leave_requests.create',compact('employee'));
 }
 
 public function store(Request $request)
@@ -37,7 +39,8 @@ public function store(Request $request)
 public function  handleLeaveRequest(LeaveRequest $leaverequest)
 {
     $employee = Employee::find($leaverequest->employee_id);
-    return view('leave_requests.Lrequesthandling',compact('leaverequest','employee'));
+    $Hr = Auth::guard('admin')->user();
+    return view('leave_requests.Lrequesthandling',compact('leaverequest','employee','Hr'));
 }
 public function  captureFeedback(Request $request ,$id)
 {

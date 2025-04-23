@@ -18,7 +18,31 @@ Route::get('/', [SalaryController::class, 'Paymentcheck'])->name('index');
 
 // Admin protected routes
 Route::middleware(['auth:admin'])->group(function () {
- 
+  // employee profile  management routes
+  Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ;
+  Route::post('/register', [RegisterController::class, 'register'])->middleware('auth:admin');
+  Route::get('/hrdashboard/{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
+  Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
+  Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
+  Route::post('/adminprofileupdate', [RegisterController::class, 'adminUpdate'])->name('Admin.profile.update');
+  Route::get('/profileupdate/{id}', [RegisterController::class, 'profileRetrival'])->name('update.profile');
+
+  //policy routes
+  Route::get('/admin/company-policies/create', [CompanyPolicyController::class, 'createpolicy'])->name('admin.company-policies.create');
+  Route::post('/admin/company-policies/store', [CompanyPolicyController::class, 'store'])->name('admin.company-policies.store');
+  Route::get('/admin/company-policies', [CompanyPolicyController::class, 'index'])->name('admin.company-policies.list');
+  Route::delete('/admin/company-policies/delete/{id}', [CompanyPolicyController::class, 'destroy'])->name('admin.company-policies.delete');
+
+  //anoucement routes
+  Route::get('/admin/announcements/create', [AnnouncementController::class, 'create'])->name('admin.announcements.create');
+ Route::post('/admin/announcements/store', [AnnouncementController::class, 'store'])->name('admin.announcements.store');
+Route::get('/admin/announcements', [AnnouncementController::class, 'index'])->name('admin.announcements.list');
+Route::delete('/admin/announcements/delete/{id}', [AnnouncementController::class, 'destroy'])->name('admin.announcements.delete');
+
+//leave requests
+Route::get('/leave-request/handling/{leaverequest}', [LeaveRequestController::class, 'handleLeaveRequest'])->name('leave.request.handling');
+Route::post('/leave-request/handling/{id}', [LeaveRequestController::class, 'captureFeedback']);
+
 });
 
 
@@ -26,35 +50,42 @@ Route::middleware(['auth:admin'])->group(function () {
 Route::middleware(['auth:employee'])->group(function () {
     // Employee Dashboard Route
 Route::get('/edashboard/{employee}', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+
+//announcement management routes
+Route::get('/employee/announcements', [EmployeeController::class, 'viewAnnouncements'])->name('employee.announcements');
+Route::get('/announcements/download/{id}', [AnnouncementController::class, 'download'])->name('announcements.download');
+
+//company policy routes
+Route::get('/employee/company-policies', [EmployeeController::class, 'viewCompanyPolicies'])->name('employee.company-policies');
+Route::get('/company-policies/download/{id}', [CompanyPolicyController::class, 'download'])->name('company-policies.download');
+
+// leave request routes
+Route::get('/leave-request', [LeaveRequestController::class, 'create'])->name('leave_requests.create');
+Route::post('/leave-request', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
+Route::post('/acknowledgement', [LeaveRequestController::class, 'acknowledge'])->name('acknowledge');
+  
+ 
 });
 
 
 // Route to view announcements
-Route::get('/employee/announcements', [EmployeeController::class, 'viewAnnouncements'])->name('employee.announcements');
+
 
 // Route to view company policies
-Route::get('/employee/company-policies', [EmployeeController::class, 'viewCompanyPolicies'])->name('employee.company-policies');
 
 
 
 //salary  tracking and management route 
-  
   Route::post('/paymentconfirmation/{email}', [SalaryController::class, 'paymentConfirmation'])->name('payment.confirmation')->middleware('auth:admin');
   Route::post('/paymentconfirmed/{id}', [SalaryController::class, 'paymentConfirmed'])->name('payment.confirmed')->middleware('auth:employee');
   // Job posting routes
  
-  // employee profile  management routes
-  Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register') ->middleware('auth:admin');
-  Route::post('/register', [RegisterController::class, 'register'])->middleware('auth:admin');
-  Route::get('/hrdashboard/{Hr}', [RegisterController::class, 'test'])->name('hrdashboard');
-  Route::get('/employeelist/{T}', [RegisterController::class, 'showEmployeeList'])->name('employeelist');
+  
 
   Route::get('/employee/{id}', [RegisterController::class, 'edit'])->name('editing');
   Route::post('/employee/{id}/{flag}', [RegisterController::class, 'update'])->name('update');
 
-  Route::get('/delete/{id}', [RegisterController::class, 'delete'])->name('delete');
-  Route::post('/adminprofileupdate', [RegisterController::class, 'adminUpdate'])->name('Admin.profile.update');
-  Route::get('/profileupdate/{id}', [RegisterController::class, 'profileRetrival'])->name('update.profile');
+ 
   
 
 
@@ -66,46 +97,34 @@ Route::get('/employee/jobs', [EmployeeController::class, 'viewJobs'])->name('emp
 
 
 // Authentication routes
-Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AdminLoginController::class, 'login']);
+
+Route::post('login', [AdminLoginController::class, 'login'])->name('login');
 Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 
 
 
 //Route for uploading of company policies
-Route::get('/admin/company-policies/create', function () {
-    return view('upload_company_policy');
-})->name('admin.company-policies.create');
-
-// for storing company policies into db
-Route::post('/admin/company-policies/store', [CompanyPolicyController::class, 'store'])->name('admin.company-policies.store');
 
 //Route for uploading of announcements
-Route::get('/admin/announcements/create', function () {
-    return view('upload_announcement');
-})->name('admin.announcements.create');
+
 
 
 // for storing company policies into db
-Route::post('/admin/announcements/store', [AnnouncementController::class, 'store'])->name('admin.announcements.store');
 
 
 
 
 // Announcement download route
-Route::get('/announcements/download/{id}', [AnnouncementController::class, 'download'])->name('announcements.download');
 
 // Company policy download route
-Route::get('/company-policies/download/{id}', [CompanyPolicyController::class, 'download'])->name('company-policies.download');
 
 
 // List views
-Route::get('/admin/announcements', [AnnouncementController::class, 'index'])->name('admin.announcements.list');
-Route::get('/admin/company-policies', [CompanyPolicyController::class, 'index'])->name('admin.company-policies.list');
+
 
 // Delete routes
-Route::delete('/admin/announcements/delete/{id}', [AnnouncementController::class, 'destroy'])->name('admin.announcements.delete');
-Route::delete('/admin/company-policies/delete/{id}', [CompanyPolicyController::class, 'destroy'])->name('admin.company-policies.delete');
+
+
 
 //jobs 
 // Show form to post a job
@@ -137,7 +156,7 @@ Route::post('/apply', [ApplicationController::class, 'store'])->name('apply.stor
 Route::get('/api/jobs', [VacancyController::class, 'apiJobs'])->name('jobs.api');
 
 //
-Route::get('/admin/applications', [ApplicationController::class, 'viewApplications'])->name('applications.view');
+//Route::get('/admin/applications', [ApplicationController::class, 'viewApplications'])->name('applications.view');
 //
 Route::get('/apply', [ApplicationController::class, 'showApplicationForm'])->name('apply.form');
 //
@@ -165,8 +184,5 @@ Route::get('/admin/dashboard', [ApplicationController::class, 'index'])->name('a
     
 // });
 
-Route::get('/leave-request', [LeaveRequestController::class, 'create'])->name('leave_requests.create');
-Route::post('/leave-request', [LeaveRequestController::class, 'store']);
-Route::get('/leave-request/handling/{leaverequest}', [LeaveRequestController::class, 'handleLeaveRequest'])->name('leave.request.handling');
-Route::post('/leave-request/handling/{id}', [LeaveRequestController::class, 'captureFeedback']);
-Route::post('/acknowledgement', [LeaveRequestController::class, 'acknowledge'])->name('acknowledge');
+
+

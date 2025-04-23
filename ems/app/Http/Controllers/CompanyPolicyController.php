@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\CompanyPolicy; // Import the CompanyPolicy model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyPolicyController extends Controller
 {
-    public function store(Request $request)
+    public function createpolicy () {
+        $Hr = Auth::guard('admin')->user();
+        return view('upload_company_policy',compact('Hr')); }
+        
+        public function store(Request $request)
     {
         $request->validate([
             'policy_title' => 'required|string|max:255',
@@ -44,7 +49,8 @@ class CompanyPolicyController extends Controller
 public function index()
 {
     $policies = CompanyPolicy::all();
-    return view('list_policies', compact('policies'));
+    $Hr = Auth::guard('admin')->user();
+    return view('list_policies', compact('policies',"Hr"));
 }
 
 public function destroy($id)

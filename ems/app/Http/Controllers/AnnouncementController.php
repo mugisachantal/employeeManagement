@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement; // Import the Announcement model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
@@ -27,6 +28,10 @@ class AnnouncementController extends Controller
         return redirect()->route('admin.announcements.create')->with('success', 'Announcement uploaded successfully!');
     }
 
+    public function create() {
+        $Hr = Auth::guard('admin')->user();
+        return view('upload_announcement',compact('Hr'));
+    }
  // added route('admin.announcements.create')
  //added
  public function download($id)
@@ -44,7 +49,8 @@ class AnnouncementController extends Controller
 public function index()
 {
     $announcements = Announcement::all();
-    return view('list_announcements', compact('announcements'));
+    $Hr = Auth::guard('admin')->user();
+    return view('list_announcements', compact('announcements',"Hr"));
 }
 
 public function destroy($id)

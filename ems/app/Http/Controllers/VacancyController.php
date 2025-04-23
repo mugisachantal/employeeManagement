@@ -3,12 +3,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VacancyController extends Controller
 {
     public function create()
     {
-        return view('post_job'); // Show form to post a new job
+     
+        $Hr = Auth::guard('admin')->user();
+        return view('post_job',compact('Hr')); // Show form to post a new job
     }
 
     public function store(Request $request)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee List by Department</title>
+    <title>Employee List </title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -82,6 +82,10 @@
             margin-left: 10px;
             font-weight: normal;
         }
+        .navbar-brand img {
+      height: 40px;
+    }
+    
     </style>
 </head>
 <body>
@@ -90,7 +94,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="/">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <img src="/images/logo.png" class="me-2 rounded-circle" alt="Logo">
                         <h1 class="m-0 fw-bold fs-3">MotorVitaGlobal</h1>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +111,7 @@
             </nav>
         </div>
     </header>
-    <div class="page-header">
+    <div class="page-sub-header bg-gray">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1><i class="bi bi-people-fill me-2"></i> Employee Directory</h1>
@@ -134,7 +138,7 @@
                         <thead>
                             <tr>
                                 @foreach (array_keys($employees->first()->toArray()) as $attribute)
-                                    @if ($attribute !== 'id' && $attribute !== 'password')
+                                    @if ($attribute !== 'id' && $attribute !== 'password'&&$attribute !== 'profile_picture')
                                         @if ($attribute !== 'created_at' && $attribute !== 'updated_at')
                                             <th>{{ ucfirst(str_replace('_', ' ', $attribute)) }}</th>
                                         @endif
@@ -158,7 +162,7 @@
                             @foreach ($employees as $employee)
                                 <tr>
                                     @foreach ($employee->toArray() as $key => $value)
-                                        @if ($key !== 'id' && $key != 'password')
+                                        @if ($key !== 'id' && $key != 'password'&& $key!='profile_picture')
                                             @if ($key == 'email')
                                                 <td><a href="mailto:{{ $value }}" class="text-decoration-none">{{ $value }}</a></td>
                                             @elseif ($key == 'name' || $key == 'first_name' || $key == 'last_name')
@@ -171,7 +175,7 @@
                                             @if($T==1)
                                                 <td class="text-center">
                                                     <a href="{{ route('editing', $value)}}" class="btn btn-primary btn-sm edit-btn">
-                                                        <i class="bi bi-pencil-square me-1"></i> change
+                                                        <i class="bi bi-pencil-square me-1"></i> edit
                                                     </a>
                                                 </td>                       
                                             @endif
@@ -192,7 +196,9 @@
             </div>
         @endforeach
     </div>
-
+<script>
+    
+</script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
